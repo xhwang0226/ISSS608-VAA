@@ -6,9 +6,11 @@ format: html
 ```{r}
 pacman::p_load(tidyverse)
 ```
+
 ```{r}
 exam_data <- read_csv("data/Exam_data.csv")
 ```
+
 ```{r}
 ggplot(data=exam_data, aes(x = MATHS)) +
   geom_histogram(bins=10, 
@@ -17,23 +19,28 @@ ggplot(data=exam_data, aes(x = MATHS)) +
                  fill="grey") +
   ggtitle("Distribution of Maths scores")
 ```
+
 ```{r}
 ggplot(data=exam_data)
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS))
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x=RACE)) +
   geom_bar()
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x = MATHS)) +
   geom_dotplot(dotsize = 0.5)
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x = MATHS)) +
@@ -42,11 +49,13 @@ ggplot(data=exam_data,
   scale_y_continuous(NULL,           
                      breaks = NULL)  
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x = MATHS)) +
   geom_histogram()       
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS)) +
@@ -54,6 +63,7 @@ ggplot(data=exam_data,
                  color="black",      
                  fill="light blue")  
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS, 
@@ -61,41 +71,48 @@ ggplot(data=exam_data,
   geom_histogram(bins=20, 
                  color="grey30")
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x = MATHS)) +
   geom_density()           
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x = MATHS, 
            colour = GENDER)) +
   geom_density()
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(y = MATHS,       
            x= GENDER)) +    
   geom_boxplot()            
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(y = MATHS, 
            x= GENDER)) +
   geom_boxplot(notch=TRUE)
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(y = MATHS, 
            x= GENDER)) +
   geom_violin()
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS, 
            y=ENGLISH)) +
   geom_point()            
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(y = MATHS, 
@@ -104,11 +121,13 @@ ggplot(data=exam_data,
   geom_point(position="jitter", 
              size = 0.5)        
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(y = MATHS, x= GENDER)) +
   geom_boxplot()
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(y = MATHS, x= GENDER)) +
@@ -118,6 +137,7 @@ ggplot(data=exam_data,
                colour ="red",        
                size=4)               
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(y = MATHS, x= GENDER)) +
@@ -127,12 +147,14 @@ ggplot(data=exam_data,
              colour="red",          
              size=4)          
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS, y=ENGLISH)) +
   geom_point() +
   geom_smooth(size=0.5)
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS, 
@@ -141,35 +163,41 @@ ggplot(data=exam_data,
   geom_smooth(method=lm, 
               linewidth=0.5)
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS)) +
   geom_histogram(bins=20) +
     facet_wrap(~ CLASS)
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS)) +
   geom_histogram(bins=20) +
     facet_grid(~ CLASS)
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x=RACE)) +
   geom_bar()
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x=RACE)) +
   geom_bar() +
   coord_flip()
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS, y=ENGLISH)) +
   geom_point() +
   geom_smooth(method=lm, size=0.5)
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS, y=ENGLISH)) +
@@ -179,6 +207,7 @@ ggplot(data=exam_data,
   coord_cartesian(xlim=c(0,100),
                   ylim=c(0,100))
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x=RACE)) +
@@ -186,6 +215,7 @@ ggplot(data=exam_data,
   coord_flip() +
   theme_gray()
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x=RACE)) +
@@ -193,6 +223,7 @@ ggplot(data=exam_data,
   coord_flip() +
   theme_classic()
 ```
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x=RACE)) +
@@ -200,4 +231,3 @@ ggplot(data=exam_data,
   coord_flip() +
   theme_minimal()
 ```
-
