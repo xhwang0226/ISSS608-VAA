@@ -147,10 +147,10 @@ p3
 ```{r}
 p1 + p2
 ```
+
 ```{r}
 (p1 / p2) | p3
 ```
-
 
 ```{r}
 ((p1 / p2) | p3) + 
@@ -173,4 +173,3 @@ p3 + inset_element(
 patchwork <- (p1 / p2) | p3
 patchwork & theme_economist()
 ```
-
