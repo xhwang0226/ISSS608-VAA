@@ -1,0 +1,85 @@
+---
+title: "Hands-on_Ex04_02"
+author: "Wang Xiaohan"
+date: "May 8, 2026"
+date-modified: "last-modified"
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    number-sections: true
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  freeze: true
+---
+```{r}
+pacman::p_load(ggstatsplot, tidyverse)
+```
+```{r}
+exam <- read_csv("data/Exam_data.csv")
+```
+
+```{r}
+exam
+```
+
+```{r}
+set.seed(1234)
+
+gghistostats(
+  data = exam,
+  x = ENGLISH,
+  type = "bayes",
+  test.value = 60,
+  xlab = "English scores"
+)
+```
+
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = GENDER, 
+  y = MATHS,
+  type = "np",
+  messages = FALSE
+)
+```
+
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = RACE, 
+  y = ENGLISH,
+  type = "p",
+  mean.ci = TRUE, 
+  pairwise.comparisons = TRUE, 
+  pairwise.display = "s",
+  p.adjust.method = "fdr",
+  messages = FALSE
+)
+```
+
+```{r}
+ggscatterstats(
+  data = exam,
+  x = MATHS,
+  y = ENGLISH,
+  marginal = FALSE,
+  )
+```
+```{r}
+exam1 <- exam %>% 
+  mutate(MATHS_bins = 
+           cut(MATHS, 
+               breaks = c(0,60,75,85,100))
+)
+```
+```{r}
+ggbarstats(exam1, 
+           x = MATHS_bins, 
+           y = GENDER)
+```
+

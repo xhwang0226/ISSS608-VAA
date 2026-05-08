@@ -1,0 +1,17 @@
+{
+  "hash": "f835219d9371af608d7abc8845726ec0",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Hands-on_Ex04_02\"\nauthor: \"Wang Xiaohan\"\ndate: \"May 8, 2026\"\ndate-modified: \"last-modified\"\nformat: \n  html:\n    toc: true\n    toc-depth: 3\n    toc-location: left\n    number-sections: true\nexecute: \n  echo: true\n  eval: true\n  warning: false\n  freeze: true\n---\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load(ggstatsplot, tidyverse)\n```\n:::\n\n\n::: {.cell}\n\n```{.r .cell-code}\nexam <- read_csv(\"data/Exam_data.csv\")\n```\n:::\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nexam\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n# A tibble: 322 × 7\n   ID         CLASS GENDER RACE    ENGLISH MATHS SCIENCE\n   <chr>      <chr> <chr>  <chr>     <dbl> <dbl>   <dbl>\n 1 Student321 3I    Male   Malay        21     9      15\n 2 Student305 3I    Female Malay        24    22      16\n 3 Student289 3H    Male   Chinese      26    16      16\n 4 Student227 3F    Male   Chinese      27    77      31\n 5 Student318 3I    Male   Malay        27    11      25\n 6 Student306 3I    Female Malay        31    16      16\n 7 Student313 3I    Male   Chinese      31    21      25\n 8 Student316 3I    Male   Malay        31    18      27\n 9 Student312 3I    Male   Malay        33    19      15\n10 Student297 3H    Male   Indian       34    49      37\n# ℹ 312 more rows\n```\n\n\n:::\n:::\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nset.seed(1234)\n\ngghistostats(\n  data = exam,\n  x = ENGLISH,\n  type = \"bayes\",\n  test.value = 60,\n  xlab = \"English scores\"\n)\n```\n\n::: {.cell-output-display}\n![](Hands-on_Ex04_02_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n:::\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggbetweenstats(\n  data = exam,\n  x = GENDER, \n  y = MATHS,\n  type = \"np\",\n  messages = FALSE\n)\n```\n\n::: {.cell-output-display}\n![](Hands-on_Ex04_02_files/figure-html/unnamed-chunk-5-1.png){width=672}\n:::\n:::\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggbetweenstats(\n  data = exam,\n  x = RACE, \n  y = ENGLISH,\n  type = \"p\",\n  mean.ci = TRUE, \n  pairwise.comparisons = TRUE, \n  pairwise.display = \"s\",\n  p.adjust.method = \"fdr\",\n  messages = FALSE\n)\n```\n\n::: {.cell-output-display}\n![](Hands-on_Ex04_02_files/figure-html/unnamed-chunk-6-1.png){width=672}\n:::\n:::\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggscatterstats(\n  data = exam,\n  x = MATHS,\n  y = ENGLISH,\n  marginal = FALSE,\n  )\n```\n\n::: {.cell-output-display}\n![](Hands-on_Ex04_02_files/figure-html/unnamed-chunk-7-1.png){width=672}\n:::\n:::\n\n\n::: {.cell}\n\n```{.r .cell-code}\nexam1 <- exam %>% \n  mutate(MATHS_bins = \n           cut(MATHS, \n               breaks = c(0,60,75,85,100))\n)\n```\n:::\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggbarstats(exam1, \n           x = MATHS_bins, \n           y = GENDER)\n```\n\n::: {.cell-output-display}\n![](Hands-on_Ex04_02_files/figure-html/unnamed-chunk-9-1.png){width=672}\n:::\n:::\n\n\n",
+    "supporting": [
+      "Hands-on_Ex04_02_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
