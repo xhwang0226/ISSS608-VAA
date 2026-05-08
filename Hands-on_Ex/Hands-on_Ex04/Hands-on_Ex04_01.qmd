@@ -3,7 +3,12 @@ title: "Hands-on_Ex04_01"
 author: "Wang Xiaohan"
 date: "May 8, 2026"
 date-modified: "last-modified"
-format: html
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    number-sections: true
 execute: 
   echo: true
   eval: true
