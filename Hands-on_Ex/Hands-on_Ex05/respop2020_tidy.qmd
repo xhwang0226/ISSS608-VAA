@@ -1,0 +1,71 @@
+---
+title: "respop2020_tidy"
+---
+```{r}
+pacman::p_load(tidyverse)
+```
+
+```{r}
+pop_raw <- read_csv("data/respop2020_raw.csv")
+```
+
+```{r}
+glimpse(pop_raw)
+```
+
+```{r}
+cat("Total rows:", nrow(pop_raw), "\n")
+cat("Country-level Total rows:", sum(pop_raw$Number == "Total"), "\n")
+cat("Planning Area subtotals (XXX - Total):",
+    sum(str_detect(pop_raw$Number, " - Total$")), "\n")
+cat("Subzone-level rows:",
+    sum(pop_raw$Number != "Total" &
+        !str_detect(pop_raw$Number, " - Total$")), "\n")
+```
+
+```{r}
+agpop_mutated <- pop_raw %>%
+  
+  # (a) 重命名第一列
+  rename(SZ = Number) %>%
+  
+  # (b) 去掉全国 Total 行
+  filter(SZ != "Total") %>%
+  
+  # (c) 去掉规划区汇总行 (XXX - Total)
+  filter(!str_detect(SZ, " - Total$")) %>%
+  
+  # (d) 只留 Total_* 年龄组列
+  select(SZ, starts_with("Total_"), -Total_Total) %>%
+  
+  # (e) 字符串转 numeric (`-` 会变成 NA)
+  mutate(across(-SZ, ~ as.numeric(.x))) %>%
+  
+  # (f) 派生 YOUNG / ACTIVE / OLD / TOTAL
+  mutate(
+    YOUNG  = rowSums(across(c(Total_0_4, Total_5_9, Total_10_14,
+                              Total_15_19, Total_20_24)),
+                     na.rm = TRUE),
+    ACTIVE = rowSums(across(c(Total_25_29, Total_30_34, Total_35_39, Total_40_44,
+                              Total_45_49, Total_50_54, Total_55_59, Total_60_64)),
+                     na.rm = TRUE),
+    OLD    = rowSums(across(c(Total_65_69, Total_70_74, Total_75_79,
+                              Total_80_84, Total_85_89, Total_90andOver)),
+                     na.rm = TRUE),
+    TOTAL  = YOUNG + ACTIVE + OLD
+  ) %>%
+  
+  # 过滤无人 subzone
+  filter(TOTAL > 0) %>%
+  
+  # 只保留最终需要的 5 列
+  select(SZ, YOUNG, ACTIVE, OLD, TOTAL)
+
+glimpse(agpop_mutated)
+```
+```
+```{r}
+write_csv(agpop_mutated, "data/respop2020_tidy.csv")
+```
+
+
