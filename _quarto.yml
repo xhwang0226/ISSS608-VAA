@@ -25,6 +25,8 @@ website:
             href: "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04_04.html"
           - text: "Hands-on Exercise 5_1"
             href: "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05_01.html"
+          - text: "Hands-on Exercise 5_2"
+            href: "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05_02.html"
     right:
       - href: index.qmd
         text: Home
