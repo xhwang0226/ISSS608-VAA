@@ -18,3 +18,4 @@ This website showcases my hands-on exercises and learning journey through the co
 -   [Hands-on Exercise 4_4: Funnel Plots for Fair Comparisons](Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04_04.html)
 -   [Hands-on Exercise 5_1: Creating Ternary Plot with R](Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05_01.html)
 -   [Hands-on Exercise 5_2: Visual Correlation Analysis R](Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05_02.html)
+-   [Hands-on Exercise 5_3:  Heatmap for Visualising and Analysing Multivariate Data R](Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05_03.html)
