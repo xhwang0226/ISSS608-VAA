@@ -5,5 +5,8 @@
 .DS_Store
 .quarto
 
+
 /.quarto/
+data/
 **/*.quarto_ipynb
+.positai
