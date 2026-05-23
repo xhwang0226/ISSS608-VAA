@@ -1,5 +1,75 @@
 [
   {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#contents",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#contents",
+    "title": "Take-home_Ex01_slides：Profitability & Volatility Drivers",
+    "section": "Contents",
+    "text": "Contents\n\nThe business question & dataset\nHow losses are distributed\nDo vehicle types differ?\nAre categorical factors material?\nCorrelations among risk factors\nFair comparison: the funnel plot\nWhat really drives a claim?\nKey findings & implications\n\n\nThis executive summary investigates what drives the profitability and volatility of a Spanish motor insurance portfolio. The analysis moves from describing how losses are distributed, through statistically testing candidate factors, to a multivariable model and a fair-comparison funnel plot, ending with concrete underwriting implications."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#the-business-question",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#the-business-question",
+    "title": "Take-home_Ex01_slides：Profitability & Volatility Drivers",
+    "section": "The Business Question",
+    "text": "The Business Question\n\n“Insurers often carry underperforming portfolios where the root causes of poor profitability and high volatility are unknown.”\n\n\n105,555 policy-year records, 30 variables (Spain, 2015–2018)\nNo ready-made profitability field → I derive the Loss Ratio (claims / premium); above 100% = a technical loss\nGoal: statistically validate the factors influencing profitability and volatility\n\n\nThe portfolio contains over 100,000 policy-year records across 30 variables. Because the dataset has no ready-made profitability field, the central metric — the Loss Ratio, claims divided by premium — is derived during data preparation. A value above 100% indicates a technical loss. All subsequent analysis revolves around explaining this measure."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#how-losses-are-distributed",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#how-losses-are-distributed",
+    "title": "Take-home_Ex01_slides：Profitability & Volatility Drivers",
+    "section": "How Losses Are Distributed",
+    "text": "How Losses Are Distributed\n\n\n\n\n\n\n\n\n\n\n\n\n\n81% of policies have no claim (Loss Ratio = 0)\nAmong claiming policies, median Loss Ratio stays below 100% (break-even)\nA long right tail exceeds break-even; the 800% cap holds catastrophic policies\nProfitability is driven by the tail, not the typical claim\n\n\n\nAbout 81% of policies have no claim at all. Among those that do, the Loss Ratio is strongly right-skewed: most stay below the 100% break-even line, but a long tail runs at a technical loss. The spike at the cap represents catastrophic policies whose losses exceed eight times the premium. Profitability is therefore driven by the tail, not the typical claim."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#do-vehicle-types-differ",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#do-vehicle-types-differ",
+    "title": "Take-home_Ex01_slides：Profitability & Volatility Drivers",
+    "section": "Do Vehicle Types Differ?",
+    "text": "Do Vehicle Types Differ?\n\n\n\n\n\n\n\n\n\n\n\n\n\nAll four vehicle types share a similar peak near Loss Ratio = 0\nMotorbikes & vans show heavier right tails than agricultural\nQuartile colours show wide spread (Q4 reaches the cap)\nShapes look distinct — but is the difference statistically real?\n\n\n\nThe ridgeline plot compares Loss Ratio distributions across the four vehicle types, with fill encoding quartiles. Motorbikes and vans show heavier right tails than agricultural vehicles. These shapes look visually distinct — but as the next slide shows, that visual difference does not survive a formal statistical test."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#a-formal-test-says-no",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#a-formal-test-says-no",
+    "title": "Take-home_Ex01_slides：Profitability & Volatility Drivers",
+    "section": "A Formal Test Says: No",
+    "text": "A Formal Test Says: No\n\n\n\n\n\n\n\n\n\n\n\n\n\nKruskal-Wallis χ² = 2.31, p = 0.32 (not significant)\nMedian Loss Ratios close: Motorbike 0.60, Van 0.64, Car 0.76\nVehicle type does not affect claim severity\n→ Redirect the search to claim frequency\n\n\n\nA Kruskal-Wallis test returns p = 0.32, well above 0.05. Despite the visually distinct ridgeline shapes, vehicle type does not significantly affect claim severity once a claim has occurred. This negative result is important: it redirects the search for drivers away from severity towards claim frequency. Honest reporting of a non-significant result reflects sound statistical practice."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#the-large-sample-trap",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#the-large-sample-trap",
+    "title": "Take-home_Ex01_slides：Profitability & Volatility Drivers",
+    "section": "The Large-Sample Trap",
+    "text": "The Large-Sample Trap\n\n\n\n\n\n\n\n\n\n\n\n\n\nChi-square χ² = 86.4, p = 1.5e-20 (highly significant)\nBut Cramer’s V = 0.03 → negligible association\nReal gap is tiny: 18% (rural) vs 20% (urban)\nWith 105,555 rows, trivial gaps turn significant\n→ Effect size matters, not just the p-value\n\n\n\nThe chi-square test is highly significant, suggesting area matters. But the effect size, Cramer’s V, is only 0.03 — negligible. The actual gap is just 18% rural versus 20% urban. With over 100,000 records, even a trivial difference becomes statistically significant. Reading the p-value alone would mislead; the effect size shows area is not a material driver."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#no-strong-numeric-predictor",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#no-strong-numeric-predictor",
+    "title": "Take-home_Ex01_slides：Profitability & Volatility Drivers",
+    "section": "No Strong Numeric Predictor",
+    "text": "No Strong Numeric Predictor\n\n\n\n\n\n\n\n\n\n\n\n\n\nVehicle attributes are highly intercorrelated: Value–Weight 0.87, Cylinder–Value 0.79\nClaim cost correlates weakly with all factors (|ρ| ≤ 0.09)\nPremium tracks vehicle attributes (0.39–0.44), not actual loss\nNo single variable predicts loss → risk is idiosyncratic\n\n\n\nThe heatmap shows two things. Vehicle attributes are highly intercorrelated — value, weight, power and cylinder capacity all measure the same underlying size. More importantly, claim cost correlates only weakly with every factor. No single numeric variable predicts loss; risk in this portfolio is largely idiosyncratic, which is why a multivariable approach is needed."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#a-fair-comparison-the-funnel-plot",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#a-fair-comparison-the-funnel-plot",
+    "title": "Take-home_Ex01_slides：Profitability & Volatility Drivers",
+    "section": "A Fair Comparison: The Funnel Plot",
+    "text": "A Fair Comparison: The Funnel Plot\n\n\n\n\n\n\n\n\n\n\n\nA funnel plot object with 8 points of which 2 are outliers. \nPlot is adjusted for overdispersion. \n\n\n\n\nSmall segments (e.g. agricultural, ~850 policies) fluctuate by chance\nAgricultural sits deep inside the funnel → noise, not signal\n2 of 8 segments fall outside the limits → genuinely unusual\nLargest segment (cars, ~60,000) lies on the mean line → stable\nAdjusted for overdispersion (extra-Poisson variation)\n\n\n\nThe funnel plot reframes the comparison correctly. The two agricultural segments sit far left with very low exposure — a naive ranking would call them the safest, but their position inside the wide funnel shows this is noise, not signal. Two segments fall outside the control limits and are genuinely high-risk. The largest segment lies on the mean line, confirming stability. The plot adjusts for overdispersion, appropriate for insurance claims."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#what-really-drives-a-claim",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#what-really-drives-a-claim",
+    "title": "Take-home_Ex01_slides：Profitability & Volatility Drivers",
+    "section": "What Really Drives a Claim?",
+    "text": "What Really Drives a Claim?\n\n\n\n\n\n\n\n\n\n\n\n\n\nVehicle type is the one robust driver of claim incidence\nVans & cars have OR &lt; 1 → lower odds than motorbikes\nNumeric factors (age, value, power) cluster at OR ≈ 1 → little effect\nAgricultural OR ≈ 100 but CI &gt; 1,000 → small-sample noise\nFunnel plot & model cross-validate each other\n\n\n\nThe forest plot delivers the clearest answer. After controlling for all factors, vehicle type is the one robust driver: vans and passenger cars have significantly lower claim odds than motorbikes. Numeric factors cluster around an odds ratio of one. Agricultural vehicles show a huge odds ratio but an extremely wide confidence interval — an unreliable small-sample estimate, exactly the artefact the funnel plot warned against. The two methods cross-validate each other."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#key-findings-and-implications",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_slides.html#key-findings-and-implications",
+    "title": "Take-home_Ex01_slides：Profitability & Volatility Drivers",
+    "section": "Key Findings and Implications",
+    "text": "Key Findings and Implications\nProfitability is concentrated — about 91% of policies are individually profitable, yet a small catastrophic tail (Technical Result down to −€260,000) dominates the portfolio’s economics. Managing the tail matters more than average pricing.\nNo single factor predicts loss — vehicle type (Kruskal-Wallis p = 0.32), area (Cramer’s V = 0.03), and vehicle value (Spearman ρ = 0.13) are all statistically weak or negligible. Risk is largely idiosyncratic.\nStructure lies in frequency, not severity — after controlling for all factors, vehicle type is the one robust driver of whether a claim occurs (vans & cars OR &lt; 1). The apparent “agricultural risk” (OR ≈ 100, CI &gt; 1,000) is small-sample noise, cross-validated by the funnel plot.\nThree recommendations:\n\nManage the tail policies, not across-the-board rates\nCompare segments by exposure, not raw claim rates\nPursue data enrichment — current rating factors miss true risk\n\n\nThe evidence converges on a coherent picture. Profitability is concentrated in a catastrophic tail. No single variable strongly predicts loss — all candidate factors are statistically weak or negligible. Where structure exists, it lies in claim frequency, driven by vehicle type, not severity. Three underwriting recommendations follow: manage the tail rather than raising all rates, compare segments by exposure, and pursue data enrichment because current rating factors capture the vehicle’s physical characteristics far better than its true risk."
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
@@ -117,5 +187,131 @@
     "title": "ISSS608-VAA",
     "section": "Hands-on Exercises",
     "text": "Hands-on Exercises\n\nHands-on Exercise 1: A Layered Grammar of Graphics with ggplot2\nHands-on Exercise 2: Beyond ggplot2 Fundamentals\nHands-on Exercise 3_1: Programming Interactive Data Visualisation\nHands-on Exercise 3_2: Programming Animated Statistical Graphics\nHands-on Exercise 4_1: Visualising Distribution\nHands-on Exercise 4_2: Visual Statistical Analysis\nHands-on Exercise 4_3: Visualising Uncertainty\nHands-on Exercise 4_4: Funnel Plots for Fair Comparisons\nHands-on Exercise 5_1: Creating Ternary Plot with R\nHands-on Exercise 5_2: Visual Correlation Analysis R\nHands-on Exercise 5_3: Heatmap for Visualising and Analysing Multivariate Data R\nHands-on Exercise 5_4: Visual Multivariate Analysis with Parallel Coordinates Plot R\nHands-on Exercise 5_5: Treemap Visualisation with R R"
+  },
+  {
+    "objectID": "index.html#take-home-exercises",
+    "href": "index.html#take-home-exercises",
+    "title": "ISSS608-VAA",
+    "section": "Take-home Exercises",
+    "text": "Take-home Exercises\n\nTake-home Exercise 1"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html",
+    "title": "Take-home_Ex01",
+    "section": "",
+    "text": "This study applies visual analytics techniques in R to a real-world Spanish non-life motor insurance portfolio (105,555 policy-year records, 30 variables, covering November 2015 to December 2018). The objective is to explore the distributions of numerical, categorical and temporal variables, and to investigate and statistically validate the factors that influence the profitability and volatility of the portfolio.\n\n\nThe slide deck below summarises the key findings for a non-technical audience. Use the arrow keys to navigate, or open it in full screen."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#importing-the-data",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#importing-the-data",
+    "title": "Take-home_Ex01",
+    "section": "2.1 Importing the data",
+    "text": "2.1 Importing the data\nThe primary dataset uses a semicolon (;) as its delimiter, so it must be imported with read_delim() rather than the comma-based read_csv().\n\n\nCode\nraw &lt;- read_delim(\"data/Motor vehicle insurance data.csv\",\n                  delim = \";\",\n                  show_col_types = FALSE)\n\n\nA first check on the dimensions and structure:\n\n\nCode\ndim(raw)\n\n\n[1] 105555     30\n\n\n\n\nCode\nglimpse(raw)\n\n\nRows: 105,555\nColumns: 30\n$ ID                   &lt;dbl&gt; 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6…\n$ Date_start_contract  &lt;chr&gt; \"05/11/2015\", \"05/11/2015\", \"05/11/2015\", \"05/11/…\n$ Date_last_renewal    &lt;chr&gt; \"05/11/2015\", \"05/11/2016\", \"05/11/2017\", \"05/11/…\n$ Date_next_renewal    &lt;chr&gt; \"05/11/2016\", \"05/11/2017\", \"05/11/2018\", \"05/11/…\n$ Date_birth           &lt;chr&gt; \"15/04/1956\", \"15/04/1956\", \"15/04/1956\", \"15/04/…\n$ Date_driving_licence &lt;chr&gt; \"20/03/1976\", \"20/03/1976\", \"20/03/1976\", \"20/03/…\n$ Distribution_channel &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…\n$ Seniority            &lt;dbl&gt; 4, 4, 4, 4, 4, 4, 15, 15, 15, 15, 3, 3, 3, 3, 3, …\n$ Policies_in_force    &lt;dbl&gt; 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1…\n$ Max_policies         &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2…\n$ Max_products         &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2…\n$ Lapse                &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…\n$ Date_lapse           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…\n$ Payment              &lt;dbl&gt; 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…\n$ Premium              &lt;dbl&gt; 222.52, 213.78, 214.84, 216.99, 213.70, 215.83, 3…\n$ Cost_claims_year     &lt;dbl&gt; 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0…\n$ N_claims_year        &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…\n$ N_claims_history     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2…\n$ R_Claims_history     &lt;dbl&gt; 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0…\n$ Type_risk            &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 1, 1, 1, 1, 3, 3…\n$ Area                 &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…\n$ Second_driver        &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…\n$ Year_matriculation   &lt;dbl&gt; 2004, 2004, 2004, 2004, 2004, 2004, 2013, 2013, 2…\n$ Power                &lt;dbl&gt; 80, 80, 80, 80, 80, 80, 85, 85, 85, 85, 6, 6, 6, …\n$ Cylinder_capacity    &lt;dbl&gt; 599, 599, 599, 599, 599, 599, 1229, 1229, 1229, 1…\n$ Value_vehicle        &lt;dbl&gt; 7068.00, 7068.00, 7068.00, 7068.00, 7068.00, 7068…\n$ N_doors              &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 0, 0, 0, 0, 0, 4, 4…\n$ Type_fuel            &lt;chr&gt; \"P\", \"P\", \"P\", \"P\", \"P\", \"P\", \"P\", \"P\", \"P\", \"P\",…\n$ Length               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 3.999, 3.999, 3.999, 3.99…\n$ Weight               &lt;dbl&gt; 190, 190, 190, 190, 190, 190, 1105, 1105, 1105, 1…"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#parsing-dates",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#parsing-dates",
+    "title": "Take-home_Ex01",
+    "section": "3.1 Parsing dates",
+    "text": "3.1 Parsing dates\nAll six date columns are imported as character strings in DD/MM/YYYY format. I convert them to proper Date type using lubridate::dmy(), which matches the day-month-year order of the source data.\n\n\nCode\ndat &lt;- raw %&gt;%\n  mutate(across(c(Date_start_contract, Date_last_renewal, Date_next_renewal,\n                  Date_birth, Date_driving_licence, Date_lapse),\n                ~ dmy(.x)))\n\n\n\n\nCode\ndat %&gt;% select(starts_with(\"Date\")) %&gt;% glimpse()\n\n\nRows: 105,555\nColumns: 6\n$ Date_start_contract  &lt;date&gt; 2015-11-05, 2015-11-05, 2015-11-05, 2015-11-05, …\n$ Date_last_renewal    &lt;date&gt; 2015-11-05, 2016-11-05, 2017-11-05, 2018-11-05, …\n$ Date_next_renewal    &lt;date&gt; 2016-11-05, 2017-11-05, 2018-11-05, 2019-11-05, …\n$ Date_birth           &lt;date&gt; 1956-04-15, 1956-04-15, 1956-04-15, 1956-04-15, …\n$ Date_driving_licence &lt;date&gt; 1976-03-20, 1976-03-20, 1976-03-20, 1976-03-20, …\n$ Date_lapse           &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#recoding-categorical-variables",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#recoding-categorical-variables",
+    "title": "Take-home_Ex01",
+    "section": "3.2 Recoding categorical variables",
+    "text": "3.2 Recoding categorical variables\nSeveral variables are stored as numeric codes (0, 1, 2…). I convert them into labelled factors so that plots and tables are self-explanatory. The encodings follow the dataset cookbook (Descriptive of the variables.xlsx) and the source paper.\n\n\nCode\ndat &lt;- dat %&gt;%\n  mutate(\n    Type_risk = factor(Type_risk,\n      levels = c(1, 2, 3, 4),\n      labels = c(\"Motorbike\", \"Van\", \"Passenger car\", \"Agricultural\")),\n    Distribution_channel = factor(Distribution_channel,\n      levels = c(0, 1), labels = c(\"Agent\", \"Broker\")),\n    Payment = factor(Payment,\n      levels = c(0, 1), labels = c(\"Annual\", \"Semi-annual\")),\n    Area = factor(Area,\n      levels = c(0, 1), labels = c(\"Rural\", \"Urban\")),\n    Second_driver = factor(Second_driver,\n      levels = c(0, 1), labels = c(\"No\", \"Yes\")),\n    Lapse = factor(Lapse,\n      levels = c(0, 1), labels = c(\"Retained\", \"Lapsed\")),\n    Type_fuel = factor(Type_fuel)\n  )\n\n\n\n\nCode\ndat %&gt;% \n  select(Type_risk, Distribution_channel, Payment, Area, \n         Second_driver, Lapse, Type_fuel) %&gt;% \n  summary()\n\n\n         Type_risk     Distribution_channel        Payment         Area      \n Motorbike    : 8502   Agent :57917         Annual     :71864   Rural:76644  \n Van          :13212   Broker:47638         Semi-annual:33691   Urban:28911  \n Passenger car:82990                                                         \n Agricultural :  851                                                         \n Second_driver      Lapse       Type_fuel   \n No :92497     Retained:84007   D   :64998  \n Yes:13058     Lapsed  :20008   P   :38793  \n               NA's    : 1540   NA's: 1764"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#deriving-analytical-variables",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#deriving-analytical-variables",
+    "title": "Take-home_Ex01",
+    "section": "3.3 Deriving analytical variables",
+    "text": "3.3 Deriving analytical variables\nThe dataset contains no ready-made profitability field, so I derive the key indicators needed to study portfolio profitability and volatility. Following the source paper, the Loss Ratio (claims divided by premium) is the central proxy for profitability — a value above 100% indicates a technical loss.\n\n\nCode\nextract_year &lt;- 2019\n\nsandbox &lt;- dat %&gt;%\n  mutate(\n    Loss_Ratio       = if_else(Premium &gt; 0, Cost_claims_year / Premium, NA_real_),\n    Technical_Result = Premium - Cost_claims_year,\n    Profitable       = factor(if_else(Technical_Result &gt; 0,\n                                      \"Profitable\", \"Loss-making\")),\n    Has_Claim        = factor(if_else(N_claims_year &gt; 0, \"Claim\", \"No claim\")),\n    Claim_Severity   = if_else(N_claims_year &gt; 0,\n                               Cost_claims_year / N_claims_year, NA_real_),\n    Age              = extract_year - year(Date_birth),\n    Vehicle_Age      = extract_year - 1 - Year_matriculation\n  )\n\n\n\n\nCode\nsandbox %&gt;%\n  select(Premium, Cost_claims_year, Loss_Ratio, Technical_Result,\n         Profitable, Has_Claim, Claim_Severity, Age, Vehicle_Age) %&gt;%\n  summary()\n\n\n    Premium        Cost_claims_year     Loss_Ratio        Technical_Result   \n Min.   :  40.14   Min.   :     0.0   Min.   :   0.0000   Min.   :-260229.5  \n 1st Qu.: 241.61   1st Qu.:     0.0   1st Qu.:   0.0000   1st Qu.:    201.7  \n Median : 292.28   Median :     0.0   Median :   0.0000   Median :    271.0  \n Mean   : 315.89   Mean   :   153.6   Mean   :   0.4762   Mean   :    162.3  \n 3rd Qu.: 361.64   3rd Qu.:     0.0   3rd Qu.:   0.0000   3rd Qu.:    340.1  \n Max.   :2993.34   Max.   :260853.2   Max.   :1071.2480   Max.   :   2993.3  \n                                                                             \n       Profitable       Has_Claim     Claim_Severity           Age        \n Loss-making: 9388   Claim   :19646   Min.   :4.007e+00   Min.   : 19.00  \n Profitable :96167   No claim:85909   1st Qu.:6.446e+01   1st Qu.: 39.00  \n                                      Median :1.542e+02   Median : 49.00  \n                                      Mean   :4.671e+02   Mean   : 49.35  \n                                      3rd Qu.:4.746e+02   3rd Qu.: 59.00  \n                                      Max.   :1.181e+05   Max.   :101.00  \n                                      NA's   :85909                       \n  Vehicle_Age   \n Min.   : 0.00  \n 1st Qu.:10.00  \n Median :13.00  \n Mean   :13.27  \n 3rd Qu.:17.00  \n Max.   :68.00"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#distribution-of-the-loss-ratio",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#distribution-of-the-loss-ratio",
+    "title": "Take-home_Ex01",
+    "section": "5.1 Distribution of the Loss Ratio",
+    "text": "5.1 Distribution of the Loss Ratio\nAbout 81% of policies incur no claim in a given year, so their Loss Ratio is exactly 0. To reveal the shape of the loss experience, the histogram below focuses on policies that did incur a claim. The Loss Ratio is capped at its 99th percentile for display only; all later statistical tests use uncapped values.\n\n\nCode\nlr_cap &lt;- quantile(sandbox$Loss_Ratio, 0.99, na.rm = TRUE)\n\nsandbox &lt;- sandbox %&gt;% mutate(Loss_Ratio_capped = pmin(Loss_Ratio, lr_cap))\n\n\n\n\nCode\nsummary(sandbox$Loss_Ratio_capped)\n\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n  0.000   0.000   0.000   0.338   0.000   8.058"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#distribution-of-the-loss-ratio-claiming-policies",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#distribution-of-the-loss-ratio-claiming-policies",
+    "title": "Take-home_Ex01",
+    "section": "5.2 Distribution of the Loss Ratio (claiming policies)",
+    "text": "5.2 Distribution of the Loss Ratio (claiming policies)\nAmong policies that incur a claim, the histogram below shows the Loss Ratio is still right-skewed: many claiming policies stay well below the 100% break-even line, but a substantial group exceeds it and runs at a technical loss.\n\n\nCode\nsandbox %&gt;%\n  filter(Has_Claim == \"Claim\", !is.na(Loss_Ratio_capped)) %&gt;%\n  ggplot(aes(x = Loss_Ratio_capped)) +\n  geom_histogram(bins = 60, fill = \"#2c7fb8\", colour = \"white\", alpha = 0.9) +\n  geom_vline(xintercept = 1, colour = \"red\", linewidth = 1, linetype = \"dashed\") +\n  annotate(\"text\", x = 1.05, y = Inf, label = \"Break-even (100%)\", hjust = 0, vjust = 1.5, colour = \"red\", size = 3.2) +\n  scale_x_continuous(labels = scales::percent_format()) +\n  labs(title = \"Among claiming policies, many run at a technical loss\", subtitle = \"Loss Ratio of policies with a claim (capped at 99th percentile)\", x = \"Loss Ratio (Claims / Premium)\", y = \"Number of policies\") +\n  theme_minimal(base_size = 12)\n\n\n\n\n\n\n\n\n\nThe distribution is strongly right-skewed. The majority of claiming policies sit below the 100% break-even line and remain profitable, but a long tail extends past it: a substantial share of claiming policies run at a technical loss. The spike at the 800% cap represents all policies whose true Loss Ratio exceeds eight times the premium — a small group of catastrophic claims that, despite their rarity, drive a disproportionate share of total losses. This confirms that profitability is shaped less by typical claims than by the behaviour of the tail."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#loss-ratio-by-vehicle-type-ridgeline-plot",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#loss-ratio-by-vehicle-type-ridgeline-plot",
+    "title": "Take-home_Ex01",
+    "section": "5.3 Loss Ratio by vehicle type — ridgeline plot",
+    "text": "5.3 Loss Ratio by vehicle type — ridgeline plot\nApplying the ridgeline technique from Hands-on Exercise 4, I compare the Loss Ratio distribution across the four vehicle types. The fill colour encodes quartiles, so the central tendency and spread of each vehicle type are directly comparable.\n\n\nCode\nsandbox %&gt;%\n  filter(Has_Claim == \"Claim\", !is.na(Loss_Ratio_capped)) %&gt;%\n  ggplot(aes(x = Loss_Ratio_capped, y = Type_risk, fill = factor(stat(quantile)))) +\n  stat_density_ridges(geom = \"density_ridges_gradient\", calc_ecdf = TRUE, quantiles = 4, quantile_lines = TRUE) +\n  scale_fill_viridis_d(name = \"Quartiles\") +\n  labs(title = \"Loss Ratio distribution differs across vehicle types\", x = \"Loss Ratio (capped)\", y = NULL) +\n  theme_ridges()\n\n\n\n\n\n\n\n\n\nThe Kruskal-Wallis test returns p = 0.32, well above 0.05, so the differences in Loss Ratio across vehicle types are not statistically significant. The median Loss Ratios are also close (Motorbike 0.60, Van 0.64, Passenger car 0.76). This is an important negative result: although the ridgeline plot suggested visually distinct shapes, once a claim has occurred, the severity of that claim does not depend meaningfully on vehicle type. This redirects the search for drivers towards claim frequency rather than severity."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#loss-ratio-by-vehicle-type-raincloud-plot",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#loss-ratio-by-vehicle-type-raincloud-plot",
+    "title": "Take-home_Ex01",
+    "section": "5.4 Loss Ratio by vehicle type — raincloud plot",
+    "text": "5.4 Loss Ratio by vehicle type — raincloud plot\nThe raincloud plot combines a half-density “cloud” (ggdist::stat_halfeye) with a boxplot, following the technique from Hands-on Exercise 4. It shows both the distribution shape and the precise median and quartiles for each vehicle type.\n\n\nCode\nsandbox %&gt;%\n  filter(Has_Claim == \"Claim\", !is.na(Loss_Ratio_capped)) %&gt;%\n  ggplot(aes(x = Type_risk, y = Loss_Ratio_capped)) +\n  stat_halfeye(adjust = 0.5, justification = -0.2, .width = 0, point_colour = NA, fill = \"#2c7fb8\") +\n  geom_boxplot(width = 0.15, outlier.shape = NA, alpha = 0.6) +\n  geom_hline(yintercept = 1, linetype = \"dashed\", colour = \"red\") +\n  coord_flip() +\n  labs(title = \"Spread and central tendency of Loss Ratio by vehicle type\", subtitle = \"Half-eye density + boxplot (raincloud); red line = break-even\", x = NULL, y = \"Loss Ratio (capped)\") +\n  theme_minimal(base_size = 12)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#distribution-of-categorical-variables",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#distribution-of-categorical-variables",
+    "title": "Take-home_Ex01",
+    "section": "5.5 Distribution of categorical variables",
+    "text": "5.5 Distribution of categorical variables\nBeyond the numerical Loss Ratio, the portfolio is described by several key categorical variables. The bars below (ordered by frequency using forcats) show the dominant segments: passenger cars, rural circulation, and diesel fuel.\n\n\nCode\nfuel_dat &lt;- sandbox %&gt;% filter(!is.na(Type_fuel))\n\np1 &lt;- ggplot(sandbox, aes(y = fct_infreq(Type_risk))) +\n  geom_bar(fill = \"#756bb1\") +\n  labs(title = \"Vehicle type\", x = \"Count\", y = NULL)\n\np2 &lt;- ggplot(sandbox, aes(y = fct_infreq(Area))) +\n  geom_bar(fill = \"#756bb1\") +\n  labs(title = \"Area\", x = \"Count\", y = NULL)\n\np3 &lt;- ggplot(fuel_dat, aes(y = fct_infreq(Type_fuel))) +\n  geom_bar(fill = \"#756bb1\") +\n  labs(title = \"Fuel type\", x = \"Count\", y = NULL)\n\np4 &lt;- ggplot(sandbox, aes(y = fct_infreq(Distribution_channel))) +\n  geom_bar(fill = \"#756bb1\") +\n  labs(title = \"Channel\", x = \"Count\", y = NULL)\n\n(p1 + p2) / (p3 + p4)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#temporal-pattern-new-business-intake",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#temporal-pattern-new-business-intake",
+    "title": "Take-home_Ex01",
+    "section": "5.6 Temporal pattern: new business intake",
+    "text": "5.6 Temporal pattern: new business intake\nTo explore the temporal dimension, I count policies by the year their contract started. This reveals when new business entered the portfolio.\n\n\nCode\nintake &lt;- sandbox %&gt;%\n  mutate(start_year = year(Date_start_contract)) %&gt;%\n  count(start_year)\n\nggplot(intake, aes(x = start_year, y = n)) +\n  geom_col(fill = \"#fd8d3c\") +\n  labs(title = \"New-business intake by contract start year\", x = \"Contract start year\", y = \"Number of policies\") +\n  theme_minimal(base_size = 12)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#vehicle-type-vs-loss-ratio",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#vehicle-type-vs-loss-ratio",
+    "title": "Take-home_Ex01",
+    "section": "6.1 Vehicle type vs Loss Ratio",
+    "text": "6.1 Vehicle type vs Loss Ratio\nFigures 2 and 3 hinted at visually different Loss Ratio shapes across vehicle types. Here I test whether this apparent difference is statistically real, using ggbetweenstats from Hands-on Exercise 4_2. Because Loss Ratio is heavily right-skewed and variances are unequal, I use a nonparametric (Kruskal-Wallis) test rather than ANOVA. To keep the plot readable on 100k+ rows, I work on a random sample of claiming policies.\n\n\nCode\nset.seed(1234)\n\nbr_dat &lt;- sandbox %&gt;%\n  filter(Has_Claim == \"Claim\", !is.na(Loss_Ratio), Loss_Ratio &lt; 5) %&gt;%\n  slice_sample(n = 3000)\n\nggbetweenstats(data = br_dat, x = Type_risk, y = Loss_Ratio, type = \"nonparametric\", xlab = \"Vehicle type\", ylab = \"Loss Ratio\", title = \"Loss Ratio does NOT differ significantly across vehicle types\")"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#claim-incidence-vs-circulation-area",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#claim-incidence-vs-circulation-area",
+    "title": "Take-home_Ex01",
+    "section": "6.2 Claim incidence vs circulation area",
+    "text": "6.2 Claim incidence vs circulation area\nSince vehicle type did not affect the severity (Loss Ratio) of claims, I now turn to claim frequency. Using ggbarstats from Hands-on Exercise 4_2, I test whether the incidence of a claim is associated with the circulation area (urban vs rural) via a chi-square test of association.\n\n\nCode\nggbarstats(data = sandbox, x = Has_Claim, y = Area, xlab = \"Area\", legend.title = \"Claim status\", title = \"Claim incidence by circulation area\")\n\n\n\n\n\n\n\n\n\nThe chi-square test is highly significant (p = 1.5e-20), which at first glance suggests area matters. However, the effect size tells a different story: Cramér’s V is only 0.03, indicating a negligible association. The actual difference is small — an 18% claim rate in rural areas versus 20% in urban areas. This is a classic large-sample effect: with over 100,000 records, even a trivial 2-percentage-point gap becomes statistically significant. Reading the p-value alone would overstate the importance of area; the effect size shows it is not a material driver of claim frequency."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#vehicle-value-vs-claim-cost",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#vehicle-value-vs-claim-cost",
+    "title": "Take-home_Ex01",
+    "section": "6.3 Vehicle value vs claim cost",
+    "text": "6.3 Vehicle value vs claim cost\nHaving found that categorical factors are not material drivers, I examine numerical risk factors. Using ggscatterstats from Hands-on Exercise 4_2, I test the relationship between vehicle value and claim cost (Spearman correlation, on claiming policies, sampled for readability).\n\n\nCode\nset.seed(1234)\n\nsc_dat &lt;- sandbox %&gt;%\n  filter(Has_Claim == \"Claim\", Cost_claims_year &lt; 20000, Value_vehicle &lt; 60000) %&gt;%\n  slice_sample(n = 3000)\n\nggscatterstats(data = sc_dat, x = Value_vehicle, y = Cost_claims_year, type = \"nonparametric\", xlab = \"Vehicle value (EUR)\", ylab = \"Claim cost (EUR)\", title = \"Vehicle value vs claim cost\")"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#correlation-among-numeric-risk-factors",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#correlation-among-numeric-risk-factors",
+    "title": "Take-home_Ex01",
+    "section": "6.4 Correlation among numeric risk factors",
+    "text": "6.4 Correlation among numeric risk factors\nTo see all numeric relationships at once, I compute a Spearman correlation matrix across the key numeric risk factors and visualise it as a heatmap with ggcorrplot. This also reveals multicollinearity (e.g. between power, cylinder capacity and vehicle value) that is relevant for later modelling.\n\n\nCode\npacman::p_load(ggcorrplot)\n\nnum_vars &lt;- sandbox %&gt;%\n  select(Premium, Cost_claims_year, Power, Cylinder_capacity, Value_vehicle, Weight, Age, Vehicle_Age) %&gt;%\n  drop_na()\n\ncorr_mat &lt;- cor(num_vars, method = \"spearman\")\n\nggcorrplot(corr_mat, type = \"lower\", lab = TRUE, lab_size = 2.8, colors = c(\"#2166ac\", \"white\", \"#b2182b\"), title = \"Spearman correlation of numeric risk factors\")\n\n\n\n\n\n\n\n\n\nTwo patterns stand out. First, the vehicle’s physical attributes are strongly intercorrelated — Value_vehicle and Weight (0.87), Cylinder_capacity and Value_vehicle (0.79), Power and Value_vehicle (0.76). This multicollinearity means these variables largely measure the same underlying “size and power” of the vehicle, and only a representative subset should enter any regression model. Second, and more importantly, Cost_claims_year correlates only weakly with every factor (all |ρ| ≤ 0.09): no single numeric variable predicts claim cost. By contrast, Premium correlates moderately with vehicle attributes (0.39–0.44), revealing that pricing is driven mainly by the vehicle’s physical characteristics rather than by variables linked to actual loss."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#multivariable-drivers-of-claim-incidence-logistic-regression",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#multivariable-drivers-of-claim-incidence-logistic-regression",
+    "title": "Take-home_Ex01",
+    "section": "7.1 Multivariable drivers of claim incidence — logistic regression",
+    "text": "7.1 Multivariable drivers of claim incidence — logistic regression\nUnivariate analyses found no single dominant driver. To assess each factor’s independent effect while controlling for the others, I fit a logistic regression for the probability of a claim. Because Figure 9 showed strong collinearity among vehicle physical attributes, I include only Value_vehicle and Power as their representatives. Coefficients are exponentiated to odds ratios and shown as a forest plot (broom + ggplot2).\n\n\nCode\nglm_dat &lt;- sandbox %&gt;%\n  select(Has_Claim, Age, Vehicle_Age, Power, Value_vehicle, Type_risk, Area, Second_driver) %&gt;%\n  drop_na()\n\nmod &lt;- glm(Has_Claim ~ ., data = glm_dat, family = binomial)\n\n\n\n\nCode\nor_tbl &lt;- tidy(mod, conf.int = TRUE, exponentiate = TRUE) %&gt;%\n  filter(term != \"(Intercept)\")\n\nggplot(or_tbl, aes(x = estimate, y = reorder(term, estimate))) +\n  geom_vline(xintercept = 1, linetype = \"dashed\", colour = \"grey50\") +\n  geom_pointrange(aes(xmin = conf.low, xmax = conf.high), colour = \"#b2182b\") +\n  scale_x_log10() +\n  labs(title = \"Which factors drive the odds of a claim?\", subtitle = \"Odds ratios from logistic regression (&gt;1 raises claim risk); 95% CI\", x = \"Odds Ratio (log scale)\", y = NULL) +\n  theme_minimal(base_size = 12)\n\n\n\n\n\n\n\n\n\nThe forest plot delivers the study’s clearest answer. After controlling for all other factors, vehicle type is the one robust driver of claim incidence: vans and passenger cars have significantly lower odds of a claim than motorbikes (their points and confidence intervals sit clearly left of OR = 1). The numeric factors (Age, Value_vehicle, Power, Vehicle_Age) cluster tightly around OR = 1 with little independent effect. Agricultural vehicles show an enormous odds ratio (~100) but with an extremely wide confidence interval stretching beyond 1,000 — an unreliable estimate caused by the tiny sample, exactly the small-sample artefact the funnel plot warned against. The two methods cross-validate each other: what looked like extreme risk is in fact statistical noise."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#executive-summary-slides",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#executive-summary-slides",
+    "title": "Take-home_Ex01",
+    "section": "",
+    "text": "The slide deck below summarises the key findings for a non-technical audience. Use the arrow keys to navigate, or open it in full screen."
   }
 ]

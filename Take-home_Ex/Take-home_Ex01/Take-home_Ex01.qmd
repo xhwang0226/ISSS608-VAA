@@ -1,0 +1,415 @@
+---
+title: "Take-home_Ex01"
+author: "Wang Xiaohan"
+date: "May 20, 2026"
+date-modified: "last-modified"
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    number-sections: true
+    code-fold: true
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  freeze: true
+---
+
+# Overview
+
+This study applies visual analytics techniques in R to a real-world Spanish 
+non-life motor insurance portfolio (105,555 policy-year records, 30 variables, 
+covering November 2015 to December 2018). The objective is to explore the 
+distributions of numerical, categorical and temporal variables, and to 
+investigate and statistically validate the factors that influence the 
+**profitability** and **volatility** of the portfolio.
+
+## Executive Summary (Slides)
+
+The slide deck below summarises the key findings for a non-technical audience. Use the arrow keys to navigate, or [open it in full screen](Take-home_Ex01_slides.html).
+
+<iframe src="Take-home_Ex01_slides.html" width="100%" height="500" style="border:1px solid #ccc; border-radius:4px;" allowfullscreen></iframe>
+
+# Getting Started
+```{r}
+pacman::p_load(tidyverse, lubridate,
+               ggdist, ggridges, ggthemes, colorspace,  
+               ggstatsplot,                             
+               patchwork, skimr, broom, scales)
+```
+
+## Importing the data
+The primary dataset uses a **semicolon (`;`)** as its delimiter, so it must be 
+imported with `read_delim()` rather than the comma-based `read_csv()`.
+
+```{r}
+raw <- read_delim("data/Motor vehicle insurance data.csv",
+                  delim = ";",
+                  show_col_types = FALSE)
+
+```
+
+A first check on the dimensions and structure:
+```{r}
+dim(raw)
+```
+
+```{r}
+glimpse(raw)
+```
+
+# Data Wrangling
+
+## Parsing dates
+
+All six date columns are imported as character strings in `DD/MM/YYYY` format. 
+I convert them to proper `Date` type using `lubridate::dmy()`, which matches the 
+day-month-year order of the source data.
+
+```{r}
+dat <- raw %>%
+  mutate(across(c(Date_start_contract, Date_last_renewal, Date_next_renewal,
+                  Date_birth, Date_driving_licence, Date_lapse),
+                ~ dmy(.x)))
+```
+
+```{r}
+dat %>% select(starts_with("Date")) %>% glimpse()
+```
+
+## Recoding categorical variables
+
+Several variables are stored as numeric codes (0, 1, 2…). I convert them into 
+labelled factors so that plots and tables are self-explanatory. The encodings 
+follow the dataset cookbook (`Descriptive of the variables.xlsx`) and the 
+source paper.
+
+```{r}
+dat <- dat %>%
+  mutate(
+    Type_risk = factor(Type_risk,
+      levels = c(1, 2, 3, 4),
+      labels = c("Motorbike", "Van", "Passenger car", "Agricultural")),
+    Distribution_channel = factor(Distribution_channel,
+      levels = c(0, 1), labels = c("Agent", "Broker")),
+    Payment = factor(Payment,
+      levels = c(0, 1), labels = c("Annual", "Semi-annual")),
+    Area = factor(Area,
+      levels = c(0, 1), labels = c("Rural", "Urban")),
+    Second_driver = factor(Second_driver,
+      levels = c(0, 1), labels = c("No", "Yes")),
+    Lapse = factor(Lapse,
+      levels = c(0, 1), labels = c("Retained", "Lapsed")),
+    Type_fuel = factor(Type_fuel)
+  )
+```
+
+```{r}
+dat %>% 
+  select(Type_risk, Distribution_channel, Payment, Area, 
+         Second_driver, Lapse, Type_fuel) %>% 
+  summary()
+```
+
+## Deriving analytical variables
+
+The dataset contains no ready-made profitability field, so I derive the key 
+indicators needed to study portfolio profitability and volatility. Following 
+the source paper, the **Loss Ratio** (claims divided by premium) is the central 
+proxy for profitability — a value above 100% indicates a technical loss.
+
+```{r}
+extract_year <- 2019
+
+sandbox <- dat %>%
+  mutate(
+    Loss_Ratio       = if_else(Premium > 0, Cost_claims_year / Premium, NA_real_),
+    Technical_Result = Premium - Cost_claims_year,
+    Profitable       = factor(if_else(Technical_Result > 0,
+                                      "Profitable", "Loss-making")),
+    Has_Claim        = factor(if_else(N_claims_year > 0, "Claim", "No claim")),
+    Claim_Severity   = if_else(N_claims_year > 0,
+                               Cost_claims_year / N_claims_year, NA_real_),
+    Age              = extract_year - year(Date_birth),
+    Vehicle_Age      = extract_year - 1 - Year_matriculation
+  )
+```
+
+```{r}
+sandbox %>%
+  select(Premium, Cost_claims_year, Loss_Ratio, Technical_Result,
+         Profitable, Has_Claim, Claim_Severity, Age, Vehicle_Age) %>%
+  summary()
+```
+
+# Justification of Visual Analytics Techniques
+
+The techniques in this study were selected to match the data characteristics and the analytical question, drawing on the methods practised in the course hands-on exercises.
+
+For **univariate distribution analysis**, the Loss Ratio is highly right-skewed with a long catastrophic tail. A simple histogram alone hides how the bulk of the distribution behaves, so I pair it with **ridgeline plots** and **raincloud plots** (Hands-on Exercise 4_1). Ridgelines compare the *shape* of the distribution across vehicle types in a compact form, while raincloud plots add the precise median and quartiles via an embedded boxplot — together they describe both shape and central tendency.
+
+For **bivariate analysis with statistical validation**, I use the `ggstatsplot` family from Hands-on Exercise 4_2, because it integrates the visualisation and the inferential test (statistic, p-value, and effect size) into a single, self-documenting graphic. The specific test is chosen by data type: a **nonparametric Kruskal-Wallis test** (`ggbetweenstats`) for comparing the skewed Loss Ratio across vehicle types, since ANOVA's normality and equal-variance assumptions are violated; a **chi-square test of association** (`ggbarstats`) for two categorical variables (claim incidence vs area); and a **Spearman correlation** (`ggscatterstats`) for monotonic numeric relationships that need not be linear. Where the dataset exceeds 100,000 rows, I work on a random sample (`set.seed(1234)`) to keep the point clouds readable without changing the statistical conclusion.
+
+For the **bonus analysis**, the **funnel plot** (Hands-on Exercise 4_4) is chosen specifically to compare claim rates across segments of very different sizes — it accounts for the fact that small segments fluctuate more by chance, directly addressing portfolio volatility. Finally, a **logistic-regression forest plot** (`broom` + `ggplot2`) is used to assess each factor's *independent* effect after controlling for the others and for multicollinearity identified in the correlation heatmap.
+
+# Univariate Analysis
+
+## Distribution of the Loss Ratio
+
+About 81% of policies incur no claim in a given year, so their Loss Ratio is 
+exactly 0. To reveal the *shape* of the loss experience, the histogram below 
+focuses on policies that did incur a claim. The Loss Ratio is capped at its 
+99th percentile for display only; all later statistical tests use uncapped values.
+
+```{r}
+lr_cap <- quantile(sandbox$Loss_Ratio, 0.99, na.rm = TRUE)
+
+sandbox <- sandbox %>% mutate(Loss_Ratio_capped = pmin(Loss_Ratio, lr_cap))
+```
+
+```{r}
+summary(sandbox$Loss_Ratio_capped)
+```
+
+## Distribution of the Loss Ratio (claiming policies)
+
+Among policies that incur a claim, the histogram below shows the Loss Ratio is 
+still right-skewed: many claiming policies stay well below the 100% break-even 
+line, but a substantial group exceeds it and runs at a technical loss.
+
+```{r}
+sandbox %>%
+  filter(Has_Claim == "Claim", !is.na(Loss_Ratio_capped)) %>%
+  ggplot(aes(x = Loss_Ratio_capped)) +
+  geom_histogram(bins = 60, fill = "#2c7fb8", colour = "white", alpha = 0.9) +
+  geom_vline(xintercept = 1, colour = "red", linewidth = 1, linetype = "dashed") +
+  annotate("text", x = 1.05, y = Inf, label = "Break-even (100%)", hjust = 0, vjust = 1.5, colour = "red", size = 3.2) +
+  scale_x_continuous(labels = scales::percent_format()) +
+  labs(title = "Among claiming policies, many run at a technical loss", subtitle = "Loss Ratio of policies with a claim (capped at 99th percentile)", x = "Loss Ratio (Claims / Premium)", y = "Number of policies") +
+  theme_minimal(base_size = 12)
+```
+The distribution is strongly right-skewed. The majority of claiming policies sit below the 100% break-even line and remain profitable, but a long tail extends past it: a substantial share of claiming policies run at a technical loss. The spike at the 800% cap represents all policies whose true Loss Ratio exceeds eight times the premium — a small group of catastrophic claims that, despite their rarity, drive a disproportionate share of total losses. This confirms that profitability is shaped less by typical claims than by the behaviour of the tail.
+
+
+## Loss Ratio by vehicle type — ridgeline plot
+
+Applying the ridgeline technique from Hands-on Exercise 4, I compare the Loss 
+Ratio distribution across the four vehicle types. The fill colour encodes 
+quartiles, so the central tendency and spread of each vehicle type are directly 
+comparable.
+
+```{r}
+sandbox %>%
+  filter(Has_Claim == "Claim", !is.na(Loss_Ratio_capped)) %>%
+  ggplot(aes(x = Loss_Ratio_capped, y = Type_risk, fill = factor(stat(quantile)))) +
+  stat_density_ridges(geom = "density_ridges_gradient", calc_ecdf = TRUE, quantiles = 4, quantile_lines = TRUE) +
+  scale_fill_viridis_d(name = "Quartiles") +
+  labs(title = "Loss Ratio distribution differs across vehicle types", x = "Loss Ratio (capped)", y = NULL) +
+  theme_ridges()
+```
+The Kruskal-Wallis test returns p = 0.32, well above 0.05, so the differences in Loss Ratio across vehicle types are not statistically significant. The median Loss Ratios are also close (Motorbike 0.60, Van 0.64, Passenger car 0.76). This is an important negative result: although the ridgeline plot suggested visually distinct shapes, once a claim has occurred, the *severity* of that claim does not depend meaningfully on vehicle type. This redirects the search for drivers towards claim *frequency* rather than severity.
+
+
+## Loss Ratio by vehicle type — raincloud plot
+
+The raincloud plot combines a half-density "cloud" (`ggdist::stat_halfeye`) with 
+a boxplot, following the technique from Hands-on Exercise 4. It shows both the 
+distribution shape and the precise median and quartiles for each vehicle type.
+
+```{r}
+sandbox %>%
+  filter(Has_Claim == "Claim", !is.na(Loss_Ratio_capped)) %>%
+  ggplot(aes(x = Type_risk, y = Loss_Ratio_capped)) +
+  stat_halfeye(adjust = 0.5, justification = -0.2, .width = 0, point_colour = NA, fill = "#2c7fb8") +
+  geom_boxplot(width = 0.15, outlier.shape = NA, alpha = 0.6) +
+  geom_hline(yintercept = 1, linetype = "dashed", colour = "red") +
+  coord_flip() +
+  labs(title = "Spread and central tendency of Loss Ratio by vehicle type", subtitle = "Half-eye density + boxplot (raincloud); red line = break-even", x = NULL, y = "Loss Ratio (capped)") +
+  theme_minimal(base_size = 12)
+```
+
+## Distribution of categorical variables
+
+Beyond the numerical Loss Ratio, the portfolio is described by several key 
+categorical variables. The bars below (ordered by frequency using `forcats`) 
+show the dominant segments: passenger cars, rural circulation, and diesel fuel.
+
+```{r}
+fuel_dat <- sandbox %>% filter(!is.na(Type_fuel))
+
+p1 <- ggplot(sandbox, aes(y = fct_infreq(Type_risk))) +
+  geom_bar(fill = "#756bb1") +
+  labs(title = "Vehicle type", x = "Count", y = NULL)
+
+p2 <- ggplot(sandbox, aes(y = fct_infreq(Area))) +
+  geom_bar(fill = "#756bb1") +
+  labs(title = "Area", x = "Count", y = NULL)
+
+p3 <- ggplot(fuel_dat, aes(y = fct_infreq(Type_fuel))) +
+  geom_bar(fill = "#756bb1") +
+  labs(title = "Fuel type", x = "Count", y = NULL)
+
+p4 <- ggplot(sandbox, aes(y = fct_infreq(Distribution_channel))) +
+  geom_bar(fill = "#756bb1") +
+  labs(title = "Channel", x = "Count", y = NULL)
+
+(p1 + p2) / (p3 + p4)
+```
+
+
+## Temporal pattern: new business intake
+
+To explore the temporal dimension, I count policies by the year their contract 
+started. This reveals when new business entered the portfolio.
+
+```{r}
+intake <- sandbox %>%
+  mutate(start_year = year(Date_start_contract)) %>%
+  count(start_year)
+
+ggplot(intake, aes(x = start_year, y = n)) +
+  geom_col(fill = "#fd8d3c") +
+  labs(title = "New-business intake by contract start year", x = "Contract start year", y = "Number of policies") +
+  theme_minimal(base_size = 12)
+```
+
+# Bivariate Analysis and Statistical Validation
+
+## Vehicle type vs Loss Ratio
+
+Figures 2 and 3 hinted at visually different Loss Ratio shapes across vehicle types. Here I test whether this apparent difference is statistically real, using ggbetweenstats from Hands-on Exercise 4_2. Because Loss Ratio is heavily right-skewed and variances are unequal, I use 
+a **nonparametric** (Kruskal-Wallis) test rather than ANOVA. To keep the plot 
+readable on 100k+ rows, I work on a random sample of claiming policies.
+
+```{r}
+set.seed(1234)
+
+br_dat <- sandbox %>%
+  filter(Has_Claim == "Claim", !is.na(Loss_Ratio), Loss_Ratio < 5) %>%
+  slice_sample(n = 3000)
+
+ggbetweenstats(data = br_dat, x = Type_risk, y = Loss_Ratio, type = "nonparametric", xlab = "Vehicle type", ylab = "Loss Ratio", title = "Loss Ratio does NOT differ significantly across vehicle types")
+```
+
+## Claim incidence vs circulation area
+
+Since vehicle type did not affect the *severity* (Loss Ratio) of claims, I now 
+turn to claim *frequency*. Using `ggbarstats` from Hands-on Exercise 4_2, I test 
+whether the incidence of a claim is associated with the circulation area 
+(urban vs rural) via a chi-square test of association.
+
+```{r}
+ggbarstats(data = sandbox, x = Has_Claim, y = Area, xlab = "Area", legend.title = "Claim status", title = "Claim incidence by circulation area")
+```
+The chi-square test is highly significant (p = 1.5e-20), which at first glance suggests area matters. However, the effect size tells a different story: Cramér's V is only 0.03, indicating a negligible association. The actual difference is small — an 18% claim rate in rural areas versus 20% in urban areas. This is a classic large-sample effect: with over 100,000 records, even a trivial 2-percentage-point gap becomes statistically significant. Reading the p-value alone would overstate the importance of area; the effect size shows it is not a material driver of claim frequency.
+
+## Vehicle value vs claim cost
+
+Having found that categorical factors are not material drivers, I examine 
+numerical risk factors. Using `ggscatterstats` from Hands-on Exercise 4_2, I 
+test the relationship between vehicle value and claim cost (Spearman correlation, 
+on claiming policies, sampled for readability).
+
+```{r}
+set.seed(1234)
+
+sc_dat <- sandbox %>%
+  filter(Has_Claim == "Claim", Cost_claims_year < 20000, Value_vehicle < 60000) %>%
+  slice_sample(n = 3000)
+
+ggscatterstats(data = sc_dat, x = Value_vehicle, y = Cost_claims_year, type = "nonparametric", xlab = "Vehicle value (EUR)", ylab = "Claim cost (EUR)", title = "Vehicle value vs claim cost")
+```
+
+## Correlation among numeric risk factors
+
+To see all numeric relationships at once, I compute a Spearman correlation 
+matrix across the key numeric risk factors and visualise it as a heatmap with 
+`ggcorrplot`. This also reveals multicollinearity (e.g. between power, cylinder 
+capacity and vehicle value) that is relevant for later modelling.
+
+```{r}
+pacman::p_load(ggcorrplot)
+
+num_vars <- sandbox %>%
+  select(Premium, Cost_claims_year, Power, Cylinder_capacity, Value_vehicle, Weight, Age, Vehicle_Age) %>%
+  drop_na()
+
+corr_mat <- cor(num_vars, method = "spearman")
+
+ggcorrplot(corr_mat, type = "lower", lab = TRUE, lab_size = 2.8, colors = c("#2166ac", "white", "#b2182b"), title = "Spearman correlation of numeric risk factors")
+```
+Two patterns stand out. First, the vehicle's physical attributes are strongly intercorrelated — Value_vehicle and Weight (0.87), Cylinder_capacity and Value_vehicle (0.79), Power and Value_vehicle (0.76). This multicollinearity means these variables largely measure the same underlying "size and power" of the vehicle, and only a representative subset should enter any regression model. Second, and more importantly, Cost_claims_year correlates only weakly with every factor (all |ρ| ≤ 0.09): no single numeric variable predicts claim cost. By contrast, Premium correlates moderately with vehicle attributes (0.39–0.44), revealing that pricing is driven mainly by the vehicle's physical characteristics rather than by variables linked to actual loss.
+
+# Beyond the Classroom: Funnel Plot for Fair Comparison
+
+A naive ranking of segments by claim rate is misleading, because small segments 
+(e.g. agricultural vehicles, with only ~850 policies) fluctuate far more by 
+chance than large ones. Applying the funnel plot technique from Hands-on Exercise 
+4_4, I plot each vehicle-type × area segment's claim rate against its exposure. 
+Segments falling outside the funnel control limits are genuinely unusual, not 
+just statistical noise — directly addressing portfolio volatility.
+
+```{r}
+pacman::p_load(FunnelPlotR)
+
+seg <- sandbox %>%
+  group_by(Type_risk, Area) %>%
+  summarise(claims = sum(N_claims_year > 0), exposure = n(), .groups = "drop") %>%
+  mutate(segment = paste(Type_risk, Area, sep = " - "))
+
+funnel_plot(.data = seg, numerator = claims, denominator = exposure, group = segment, data_type = "PR", title = "Claim incidence by segment (vehicle type x area)", x_label = "Exposure (number of policies)", y_label = "Claim rate")
+```
+The funnel plot reframes the comparison correctly. The two agricultural segments sit at the far left (very low exposure) with near-zero claim rates — a naive ranking would flag them as the "safest" segments, but their position deep inside the wide part of the funnel shows this is most likely noise, not a genuine signal. Conversely, two segments fall outside the control limits and are genuinely high-risk after accounting for exposure. The largest segment (passenger cars, ~60,000 policies) lies almost exactly on the overall mean line, confirming it is stable and representative. The plot is adjusted for overdispersion, appropriate given the extra-Poisson variation typical of insurance claims.
+
+## Multivariable drivers of claim incidence — logistic regression
+
+Univariate analyses found no single dominant driver. To assess each factor's 
+*independent* effect while controlling for the others, I fit a logistic 
+regression for the probability of a claim. Because Figure 9 showed strong 
+collinearity among vehicle physical attributes, I include only `Value_vehicle` 
+and `Power` as their representatives. Coefficients are exponentiated to odds 
+ratios and shown as a forest plot (`broom` + `ggplot2`).
+
+```{r}
+glm_dat <- sandbox %>%
+  select(Has_Claim, Age, Vehicle_Age, Power, Value_vehicle, Type_risk, Area, Second_driver) %>%
+  drop_na()
+
+mod <- glm(Has_Claim ~ ., data = glm_dat, family = binomial)
+```
+
+```{r}
+or_tbl <- tidy(mod, conf.int = TRUE, exponentiate = TRUE) %>%
+  filter(term != "(Intercept)")
+
+ggplot(or_tbl, aes(x = estimate, y = reorder(term, estimate))) +
+  geom_vline(xintercept = 1, linetype = "dashed", colour = "grey50") +
+  geom_pointrange(aes(xmin = conf.low, xmax = conf.high), colour = "#b2182b") +
+  scale_x_log10() +
+  labs(title = "Which factors drive the odds of a claim?", subtitle = "Odds ratios from logistic regression (>1 raises claim risk); 95% CI", x = "Odds Ratio (log scale)", y = NULL) +
+  theme_minimal(base_size = 12)
+```
+The forest plot delivers the study's clearest answer. After controlling for all other factors, vehicle type is the one robust driver of claim incidence: vans and passenger cars have significantly lower odds of a claim than motorbikes (their points and confidence intervals sit clearly left of OR = 1). The numeric factors (Age, Value_vehicle, Power, Vehicle_Age) cluster tightly around OR = 1 with little independent effect. Agricultural vehicles show an enormous odds ratio (~100) but with an extremely wide confidence interval stretching beyond 1,000 — an unreliable estimate caused by the tiny sample, exactly the small-sample artefact the funnel plot warned against. The two methods cross-validate each other: what looked like extreme risk is in fact statistical noise.
+
+
+# Key Findings and Business Implications
+
+This investigation set out to identify the drivers of profitability and volatility in the motor insurance portfolio. The visual and statistical evidence converges on a single, coherent picture.
+
+**Profitability is concentrated, not broad-based.** Although about 91% of policies are individually profitable, the portfolio's economics are dominated by the tail: a small number of catastrophic policies (Technical Result down to −€260,000) destroy a disproportionate share of the profit earned across all others. The Loss Ratio is therefore extremely right-skewed, and aggregate profitability hinges on managing the tail rather than on average pricing.
+
+**No single variable strongly predicts loss.** Vehicle type does not significantly affect claim *severity* (Kruskal-Wallis, p = 0.32); circulation area is statistically associated with claim *frequency* but with a negligible effect size (Cramér's V = 0.03); and vehicle value correlates only weakly with claim cost (Spearman ρ = 0.13). The correlation heatmap confirms that no numeric factor is meaningfully related to claim cost. Risk in this portfolio is largely idiosyncratic.
+
+**Where structure does exist, it lies in frequency, not severity.** The multivariable logistic regression shows that, after controlling for other factors, vehicle type is the one robust driver of *whether* a claim occurs — vans and passenger cars have significantly lower claim odds than motorbikes. The apparently extreme risk of agricultural vehicles is a small-sample artefact, confirmed both by its wide regression confidence interval and by the funnel plot, where small segments fall well within the control limits once exposure is accounted for.
+
+**Implications for underwriting.** Three recommendations follow. First, profitability should be improved by identifying and managing the small set of tail policies, rather than through across-the-board rate increases. Second, segment comparisons must account for exposure: small segments such as agricultural vehicles should not be judged on raw claim rates, which are dominated by noise. Third, the weak link between the rating factors (vehicle attributes) and actual claim cost suggests that current pricing captures the *physical* characteristics of the vehicle far better than its *true* risk — pointing to data enrichment as the most promising avenue for refining the underwriting strategy.
+
+# References
+
+Pavía, J. M., Gil-Hernández, C. J., & Vila-Olmos, J. (2023). Spanish motor insurance data. *Mendeley Data*, V2. https://doi.org/10.17632/5cxyb5fp4f.2
+
+Wickham, H., et al. (2019). Welcome to the tidyverse. *Journal of Open Source Software, 4*(43), 1686.
+
+Patil, I. (2021). Visualizations with statistical details: The 'ggstatsplot' approach. *Journal of Open Source Software, 6*(61), 3167.
