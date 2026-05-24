@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.37">
+
+  <meta name="author" content="Wang Xiaohan">
+  <meta name="dcterms.date" content="2026-05-21">
+  <title>ISSS608-VAA – Profitability &amp; Volatility Drivers</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-dfdadd8410f23a3d9b7a2c69b37f95a7.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Profitability &amp; Volatility Drivers</h1>
+  <p class="subtitle">A Visual Analytics Study of a Motor Insurance Portfolio</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Wang Xiaohan 
+</div>
+</div>
+</div>
+
+  <p class="date">2026-05-21</p>
+</section>
+<section id="contents" class="slide level2 smaller contents-slide">
+<h2>Contents</h2>
+<ol type="1">
+<li>The business question &amp; dataset</li>
+<li>How losses are distributed</li>
+<li>Do vehicle types differ?</li>
+<li>Are categorical factors material?</li>
+<li>Correlations among risk factors</li>
+<li>Fair comparison: the funnel plot</li>
+<li>What really drives a claim?</li>
+<li>Key findings &amp; implications</li>
+</ol>
+<aside class="notes">
+<p>This executive summary investigates what drives the profitability and volatility of a Spanish motor insurance portfolio. The analysis moves from describing how losses are distributed, through statistically testing candidate factors, to a multivariable model and a fair-comparison funnel plot, ending with concrete underwriting implications.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-business-question" class="slide level2 smaller">
+<h2>The Business Question</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<blockquote>
+<p><em>“Insurers often carry underperforming portfolios where the root causes of poor profitability and high volatility are unknown.”</em></p>
+</blockquote>
+<p>This study interrogates a real-world Spanish motor insurance portfolio to find those root causes — and to <strong>prove them statistically</strong>, not by intuition.</p>
+</div><div class="column" style="width:48%;">
+<div class="bignum">
+<p>105,555</p>
+</div>
+<div class="bignum-label">
+<p>policy-year records · 30 variables · Spain, 2015–2018</p>
+</div>
+<p><br></p>
+<ul>
+<li>No ready-made profitability field → I derive the <strong>Loss Ratio</strong> (claims ÷ premium)</li>
+<li>Above <strong>100%</strong> = a technical loss</li>
+<li><strong>Goal:</strong> validate drivers of <strong>profitability</strong> &amp; <strong>volatility</strong></li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>The portfolio contains over 100,000 policy-year records across 30 variables. Because the dataset has no ready-made profitability field, the central metric — the Loss Ratio, claims divided by premium — is derived during data preparation. A value above 100% indicates a technical loss. All subsequent analysis revolves around explaining this measure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="how-losses-are-distributed" class="slide level2 smaller">
+<h2>How Losses Are Distributed</h2>
+<div class="columns">
+<div class="column" style="width:68%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Take-home_Ex01_slides_files/figure-revealjs/unnamed-chunk-1-1.png" width="816"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:32%;">
+<div class="dist-read">
+<p><strong>How to read it</strong></p>
+<p>Each bar = policies at that loss level. The dashed line is <strong>break-even</strong> — left of it, the policy made money; right of it, claims beat premium.</p>
+<p>The bulk sits <strong>left of break-even</strong>, but a long <strong>right tail</strong> keeps going well past 300%.</p>
+</div>
+</div></div>
+<div class="dist-points">
+<p><strong>81%</strong> of policies never claim · among claimers, <strong>most stay below break-even</strong> · a <strong>heavy tail</strong> runs at a technical loss → <strong>profitability lives in the tail, not the average</strong></p>
+</div>
+<aside class="notes">
+<p>About 81% of policies have no claim at all. Among those that do claim, the Loss Ratio is strongly right-skewed: the bulk of claiming policies sit below the 100% break-even line, meaning their claims cost less than the premium collected. But a long right tail extends far beyond break-even — I’ve capped the axis at 300% here so the main distribution stays readable, but in the raw data the tail runs much further, up to catastrophic policies whose losses exceed eight times the premium. The key insight for underwriting is that aggregate profitability is driven by this small, extreme tail rather than by the typical policy. This argues for tail-focused risk segmentation rather than across-the-board rate increases.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p>::::</p>
+</section>
+<section id="do-vehicle-types-differ" class="slide level2 smaller">
+<h2>Do Vehicle Types Differ?</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Take-home_Ex01_slides_files/figure-revealjs/unnamed-chunk-2-1.png" width="624"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:35%;">
+<ul>
+<li>All four vehicle types share a similar peak near <strong>Loss Ratio = 0</strong></li>
+<li>Motorbikes &amp; vans show <strong>heavier right tails</strong> than agricultural</li>
+<li>Quartile colours show wide spread (<strong>Q4 reaches the cap</strong>)</li>
+<li>Shapes <strong>look</strong> distinct — but is the difference <strong>statistically real</strong>?</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>The ridgeline plot compares Loss Ratio distributions across the four vehicle types, with fill encoding quartiles. Motorbikes and vans show heavier right tails than agricultural vehicles. These shapes look visually distinct — but as the next slide shows, that visual difference does not survive a formal statistical test.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-formal-test-says-no" class="slide level2 smaller">
+<h2>A Formal Test Says: No</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Take-home_Ex01_slides_files/figure-revealjs/unnamed-chunk-3-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:45%;">
+<div class="bignum">
+<p>p = 0.32</p>
+</div>
+<div class="bignum-label">
+<p>Kruskal-Wallis · not significant</p>
+</div>
+<p><br></p>
+<p>The ridgelines <em>looked</em> different — but the medians barely move: <strong>0.60 · 0.64 · 0.76</strong>.</p>
+<p>Vehicle type does <strong>not</strong> drive claim <strong>severity</strong>.</p>
+<blockquote>
+<p>So the structure must lie in <strong>frequency</strong> — <em>who</em> files a claim, not <em>how much</em>.</p>
+</blockquote>
+</div></div>
+<aside class="notes">
+<p>A Kruskal-Wallis test returns p = 0.32, well above 0.05. Despite the visually distinct ridgeline shapes, vehicle type does not significantly affect claim severity once a claim has occurred. This negative result is important: it redirects the search for drivers away from severity towards claim frequency. Honest reporting of a non-significant result reflects sound statistical practice.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-large-sample-trap" class="slide level2 smaller">
+<h2>The Large-Sample Trap</h2>
+
+<img data-src="Take-home_Ex01_slides_files/figure-revealjs/unnamed-chunk-4-1.png" width="1056" class="r-stretch"><div class="trap-cards">
+<div class="trap-card">
+<p><strong>Statistically significant</strong></p>
+<p>χ² = <strong>86.4</strong>, p = <strong>1.5e-20</strong></p>
+<p>A textbook “highly significant” result.</p>
+</div>
+<div class="trap-card">
+<p><strong>Practically negligible</strong></p>
+<p>Cramer’s V = <strong>0.03</strong> · gap is only <strong>18% vs 20%</strong></p>
+<p>The association is essentially zero.</p>
+</div>
+<div class="trap-card trap-card-accent">
+<p><strong>Why? Sample size.</strong></p>
+<p>With <strong>105,555</strong> rows, even trivial gaps cross the significance line.</p>
+<p>→ <strong>Effect size matters, not just the p-value.</strong></p>
+</div>
+</div>
+<aside class="notes">
+<p>The chi-square test is highly significant, suggesting area matters. But the effect size, Cramer’s V, is only 0.03 — negligible. The actual gap is just 18% rural versus 20% urban. With over 100,000 records, even a trivial difference becomes statistically significant. Reading the p-value alone would mislead; the effect size shows area is not a material driver.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="no-strong-numeric-predictor" class="slide level2 smaller">
+<h2>No Strong Numeric Predictor</h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Take-home_Ex01_slides_files/figure-revealjs/unnamed-chunk-5-1.png" width="528"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:42%;">
+<ul>
+<li>Vehicle attributes are <strong>highly intercorrelated</strong>: Value–Weight <strong>0.87</strong>, Cylinder–Value <strong>0.79</strong></li>
+<li>Claim cost correlates <strong>weakly with all factors</strong> (|ρ| ≤ <strong>0.09</strong>)</li>
+<li>Premium tracks vehicle attributes (<strong>0.39–0.44</strong>), not actual loss</li>
+<li><strong>No single variable predicts loss</strong> → risk is idiosyncratic</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>The heatmap shows two things. Vehicle attributes are highly intercorrelated — value, weight, power and cylinder capacity all measure the same underlying size. More importantly, claim cost correlates only weakly with every factor. No single numeric variable predicts loss; risk in this portfolio is largely idiosyncratic, which is why a multivariable approach is needed.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-fair-comparison-the-funnel-plot" class="slide level2 smaller">
+<h2>A Fair Comparison: The Funnel Plot</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Take-home_Ex01_slides_files/figure-revealjs/unnamed-chunk-6-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>A funnel plot object with 8 points of which 2 are outliers. 
+Plot is adjusted for overdispersion. </code></pre>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="funnel-block">
+<p><strong>Inside the funnel → noise</strong></p>
+<p>Small segments (agricultural, <strong>~850</strong> policies) swing by chance and sit <strong>deep inside</strong> the limits. The largest segment (cars, <strong>~60,000</strong>) lands on the mean line — <strong>stable</strong>.</p>
+</div>
+<div class="funnel-block funnel-block-accent">
+<p><strong>Outside the limits → real</strong></p>
+<p><strong>2 of 8</strong> segments fall outside the control limits — genuinely unusual, not sampling noise. Limits are <strong>adjusted for overdispersion</strong>, so the test is fair across segment sizes.</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>The funnel plot reframes the comparison correctly. The two agricultural segments sit far left with very low exposure — a naive ranking would call them the safest, but their position inside the wide funnel shows this is noise, not signal. Two segments fall outside the control limits and are genuinely high-risk. The largest segment lies on the mean line, confirming stability. The plot adjusts for overdispersion, appropriate for insurance claims.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-really-drives-a-claim" class="slide level2 smaller">
+<h2>What Really Drives a Claim?</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Take-home_Ex01_slides_files/figure-revealjs/unnamed-chunk-7-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<ul>
+<li><strong>Vehicle type</strong> is the one robust driver of claim incidence</li>
+<li>Vans &amp; cars have <strong>OR &lt; 1</strong> → lower odds than motorbikes</li>
+<li>Numeric factors (age, value, power) cluster at <strong>OR ≈ 1</strong> → little effect</li>
+<li>Agricultural <strong>OR ≈ 100</strong> but <strong>CI &gt; 1,000</strong> → small-sample noise</li>
+<li><strong>Funnel plot &amp; model cross-validate</strong> each other</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>The forest plot delivers the clearest answer. After controlling for all factors, vehicle type is the one robust driver: vans and passenger cars have significantly lower claim odds than motorbikes. Numeric factors cluster around an odds ratio of one. Agricultural vehicles show a huge odds ratio but an extremely wide confidence interval — an unreliable small-sample estimate, exactly the artefact the funnel plot warned against. The two methods cross-validate each other.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="key-findings-and-implications" class="slide level2 smaller">
+<h2>Key Findings and Implications</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="kf-label">
+<p>What we found</p>
+</div>
+<div class="kf-finding">
+<p><strong>Profitability is concentrated</strong> — about <strong>91%</strong> of policies are individually profitable, yet a small catastrophic tail (Technical Result down to <strong>−€260,000</strong>) dominates the portfolio’s economics. Managing the tail matters far more than average pricing.</p>
+</div>
+<div class="kf-finding">
+<p><strong>No single factor predicts loss</strong> — vehicle type (Kruskal-Wallis <strong>p = 0.32</strong>), area (Cramer’s <strong>V = 0.03</strong>) and vehicle value (Spearman <strong>ρ = 0.13</strong>) are all statistically weak or negligible. Loss is largely <strong>idiosyncratic</strong>, not explained by the rating factors on file.</p>
+</div>
+<div class="kf-finding">
+<p><strong>Structure lies in frequency, not severity</strong> — after controlling for all factors, vehicle type is the one robust driver of <em>whether</em> a claim occurs (vans &amp; cars <strong>OR &lt; 1</strong>). The dramatic “agricultural risk” (<strong>OR ≈ 100</strong>) was small-sample noise — confirmed by the funnel plot.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="kf-label">
+<p>What to do</p>
+</div>
+<div class="kf-action">
+<p><strong>1 · Manage the tail, not the average</strong></p>
+<p>Focus underwriting and reinsurance on the rare catastrophic policies that drive losses, rather than raising rates across the whole book.</p>
+</div>
+<div class="kf-action">
+<p><strong>2 · Compare segments by exposure</strong></p>
+<p>Judge segment risk on a funnel plot that widens for small samples — not on raw claim rates, which made tiny agricultural cohorts look falsely extreme.</p>
+</div>
+<div class="kf-action kf-action-accent">
+<p><strong>3 · Enrich the data</strong></p>
+<p>Existing rating factors miss true risk. Invest in richer features — driver behaviour, telematics, history — to capture the idiosyncratic variation current fields cannot.</p>
+</div>
+</div></div>
+</section>
+<section id="section" class="slide level2 center takeaway-slide">
+<h2></h2>
+<div class="takeaway-text">
+<p>The portfolio’s fate is written in its <strong>tail</strong> and its <strong>claim frequency</strong> — not in any single rating factor.</p>
+</div>
+<div class="takeaway-sub">
+<p>Manage the tail · compare by exposure · enrich the data</p>
+</div>
+<aside class="notes">
+<p>The single most important takeaway: the portfolio’s profitability and volatility are driven by the catastrophic tail and by claim frequency, not by any individual rating factor examined. The three actions follow directly — manage tail policies, compare segments fairly by exposure, and enrich the data to capture true risk.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'slow',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
