@@ -1,0 +1,311 @@
+/*-- scss:defaults --*/
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600&display=swap');
+
+// 珊瑚粉色系，呼应网站导航栏
+$body-bg: #fdf6f3;
+$body-color: #2d2620;
+$link-color: #e36c52;
+$selection-bg: #f7d5cb;
+
+$font-family-sans-serif: "Inter", "PingFang SC", sans-serif;
+$presentation-heading-font: "Fraunces", "Songti SC", serif;
+$presentation-heading-color: #c9543a;
+$presentation-heading-font-weight: 600;
+$presentation-font-size-root: 30px;
+
+$presentation-h1-font-size: 2.4em;
+$presentation-h2-font-size: 1.7em;
+
+/*-- scss:rules --*/
+.reveal { letter-spacing: -0.005em; }
+
+// 二级标题：衬线字 + 珊瑚色 + 短下划线
+.reveal h2 {
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  color: #c9543a;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.55em;
+  position: relative;
+  padding-bottom: 0.22em;
+}
+.reveal h2::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 70px; height: 4px;
+  background: #e36c52;
+  border-radius: 2px;
+}
+
+// 加粗：珊瑚色
+.reveal strong { color: #c9543a; font-weight: 600; }
+
+// 列表：珊瑚色圆点
+.reveal ul { list-style: none; margin-left: 0.2em; }
+.reveal ul li {
+  position: relative;
+  padding-left: 1.3em;
+  margin-bottom: 0.55em;
+  line-height: 1.5;
+  color: #3d3833;
+}
+.reveal ul li::before {
+  content: "●";
+  position: absolute; left: 0; top: 0.32em;
+  color: #e36c52; font-size: 0.6em;
+}
+.reveal ol li { margin-bottom: 0.5em; line-height: 1.5; color: #3d3833; }
+
+// 封面：珊瑚渐变背景（强制覆盖）
+#title-slide,
+.reveal .title-slide,
+.reveal section.title-slide {
+  background: linear-gradient(135deg, #e36c52 0%, #d4533a 55%, #b8402a 100%) !important;
+}
+#title-slide h1.title,
+.reveal .title-slide h1 {
+  font-family: "Fraunces", serif !important;
+  font-size: 2.4em !important;
+  font-weight: 700 !important;
+  color: #fdf6f3 !important;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+#title-slide .subtitle,
+.reveal .title-slide .subtitle {
+  color: #fbe3db !important;
+  font-weight: 300 !important;
+  font-size: 1.0em !important;
+  margin-top: 0.5em;
+}
+#title-slide .author,
+.reveal .title-slide .author,
+#title-slide .quarto-title-author-name {
+  color: #fdf6f3 !important;
+  font-weight: 500 !important;
+  margin-top: 1em;
+}
+#title-slide .date,
+.reveal .title-slide .date {
+  color: #f5cabd !important;
+  font-weight: 300 !important;
+  font-size: 0.8em !important;
+}
+// 引用块：珊瑚左线 + 暖背景
+.reveal blockquote {
+  border-left: 4px solid #e36c52;
+  background: #fbe9e3;
+  padding: 0.6em 1.2em;
+  font-style: italic; color: #2d2620;
+  border-radius: 0 6px 6px 0;
+}
+
+.reveal .slide-number { color: #c9a99e; background: transparent; }
+.reveal .columns { align-items: center; }
+
+// ===== 排版变化：打破呆板 =====
+
+// 目录页（contents）：数字列表加大、加间距、珊瑚色序号
+.reveal .contents-slide ol {
+  font-size: 1.15em;
+  counter-reset: item;
+  list-style: none;
+}
+.reveal .contents-slide ol li {
+  counter-increment: item;
+  padding-left: 1.8em;
+  position: relative;
+  margin-bottom: 0.7em;
+}
+.reveal .contents-slide ol li::before {
+  content: counter(item);
+  position: absolute; left: 0; top: 0;
+  color: #e36c52; font-family: "Fraunces", serif;
+  font-weight: 700; font-size: 1.1em;
+}
+
+// 结论页（closing）：加大行距、左侧珊瑚强调条
+.reveal .closing-slide p {
+  border-left: 3px solid #f0b5a8;
+  padding-left: 0.8em;
+  margin-bottom: 0.7em;
+}
+
+// 大数字强调页：用于突出关键数字
+.reveal .bignum {
+  font-family: "Fraunces", serif;
+  font-size: 2.8em;
+  font-weight: 700;
+  color: #c9543a;
+  line-height: 1;
+}
+.reveal .bignum-label {
+  font-size: 0.7em;
+  color: #6b635a;
+  font-weight: 300;
+}
+// 内容页垂直居中，消除底部大片留白
+.reveal .slides > section,
+.reveal .slides > section > section {
+  height: 100%;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+}
+// 标题保持在内容组上方，不被拉伸
+.reveal .slides > section > h2 {
+  flex: 0 0 auto;
+}
+// 总结页：柔和的多层次渐变背景
+.reveal section.takeaway-slide {
+  background: linear-gradient(135deg, #e8917a 0%, #d4674e 45%, #b85440 100%) !important;
+}
+// 一句话总结页
+.reveal .takeaway-slide .takeaway-text {
+  font-family: "Fraunces", serif;
+  font-size: 1.7em;
+  font-weight: 600;
+  color: #fdf6f3;
+  line-height: 1.4;
+  text-align: center;
+  max-width: 85%;
+  margin: 0 auto;
+}
+.reveal .takeaway-slide .takeaway-text strong {
+  color: #ffe0d3;
+}
+.reveal .takeaway-slide .takeaway-sub {
+  font-family: "Inter", sans-serif;
+  font-size: 0.75em;
+  color: #f5cabd;
+  text-align: center;
+  margin-top: 1.5em;
+  letter-spacing: 0.05em;
+  font-weight: 300;
+}
+// 分布页：图下方横排要点条
+.reveal .dist-points {
+  margin-top: 0.8em;
+  padding: 0.7em 1em;
+  background: #fbe9e3;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.78em;
+  line-height: 1.6;
+  color: #3d3833;
+}
+// 分布页右侧"如何读图"引导框
+.reveal .dist-read {
+  background: #fdf3ec;
+  border-left: 4px solid #e36c52;
+  border-radius: 6px;
+  padding: 0.7em 0.9em;
+  font-size: 0.62em;
+  line-height: 1.55;
+  color: #3d3833;
+  margin-top: 1.2em;
+}
+.reveal .dist-read strong {
+  display: block;
+  margin-bottom: 0.4em;
+  color: #c75c2e;
+  font-size: 1.05em;
+}
+// 第7页：下方三栏卡片
+.reveal .trap-cards {
+  display: flex;
+  gap: 0.9em;
+  margin-top: 0.4em;
+}
+.reveal .trap-card {
+  flex: 1;
+  background: #fdf3ec;
+  border-top: 4px solid #e36c52;
+  border-radius: 8px;
+  padding: 0.7em 0.9em;
+  font-size: 0.6em;
+  line-height: 1.5;
+  color: #3d3833;
+}
+.reveal .trap-card strong {
+  color: #c75c2e;
+}
+.reveal .trap-card-accent {
+  background: #c75c2e;
+  border-top-color: #16324f;
+  color: #ffffff;
+}
+.reveal .trap-card-accent strong {
+  color: #ffffff;
+}
+// 第9页：右侧两段式判读块
+.reveal .funnel-block {
+  background: #fdf3ec;
+  border-left: 4px solid #e36c52;
+  border-radius: 8px;
+  padding: 0.7em 0.9em;
+  font-size: 0.62em;
+  line-height: 1.5;
+  color: #3d3833;
+  margin-bottom: 0.7em;
+}
+.reveal .funnel-block strong {
+  color: #c75c2e;
+}
+.reveal .funnel-block strong:first-child {
+  display: block;
+  margin-bottom: 0.35em;
+  font-size: 1.1em;
+}
+.reveal .funnel-block-accent {
+  background: #c75c2e;
+  border-left-color: #16324f;
+  color: #ffffff;
+}
+.reveal .funnel-block-accent strong {
+  color: #ffffff;
+}
+// 第11页：结论页 左发现 / 右建议
+.reveal .kf-label {
+  font-size: 0.6em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #16324f;
+  margin-bottom: 0.5em;
+  padding-bottom: 0.2em;
+  border-bottom: 2px solid #e36c52;
+}
+.reveal .kf-finding {
+  border-left: 4px solid #e36c52;
+  padding: 0.3em 0 0.3em 0.7em;
+  margin-bottom: 0.7em;
+  font-size: 0.58em;
+  line-height: 1.5;
+  color: #3d3833;
+}
+.reveal .kf-finding strong {
+  color: #c75c2e;
+}
+.reveal .kf-action {
+  background: #fdf3ec;
+  border-radius: 8px;
+  padding: 0.55em 0.85em;
+  margin-bottom: 0.55em;
+  font-size: 0.58em;
+  line-height: 1.5;
+  color: #3d3833;
+}
+.reveal .kf-action strong {
+  display: block;
+  margin-bottom: 0.2em;
+  color: #c75c2e;
+}
+.reveal .kf-action-accent {
+  background: #c75c2e;
+  color: #ffffff;
+}
+.reveal .kf-action-accent strong {
+  color: #ffffff;
+}

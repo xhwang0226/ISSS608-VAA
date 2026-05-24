@@ -1,13 +1,15 @@
 ---
-title: "Take-home_Ex01_slides：Profitability & Volatility Drivers"
+title: "Profitability & Volatility Drivers"
 subtitle: "A Visual Analytics Study of a Motor Insurance Portfolio"
 author: "Wang Xiaohan"
 date: "May 21, 2026"
 format:
   revealjs:
-    theme: simple
+    theme: [simple, slides-custom.scss]
     slide-number: true
-    transition: fade
+    transition: slide
+    transition-speed: slow
+    background-transition: fade
     incremental: false
     code-fold: true
 execute:
@@ -41,7 +43,7 @@ lr_cap <- quantile(sandbox$Loss_Ratio, 0.99, na.rm = TRUE)
 sandbox <- sandbox %>% mutate(Loss_Ratio_capped = pmin(Loss_Ratio, lr_cap))
 ```
 
-## Contents {.smaller}
+## Contents {.smaller .contents-slide}
 
 1. The business question & dataset
 2. How losses are distributed
@@ -58,11 +60,27 @@ This executive summary investigates what drives the profitability and volatility
 
 ## The Business Question {.smaller}
 
-> "Insurers often carry underperforming portfolios where the root causes of poor profitability and high volatility are unknown."
+:::: {.columns}
+::: {.column width="52%"}
+> *"Insurers often carry underperforming portfolios where the root causes of poor profitability and high volatility are unknown."*
 
-- **105,555** policy-year records, **30** variables (Spain, 2015–2018)
-- No ready-made profitability field → I derive the **Loss Ratio** (claims / premium); above 100% = a technical loss
-- **Goal:** statistically validate the factors influencing **profitability** and **volatility**
+This study interrogates a real-world Spanish motor insurance portfolio to find those root causes — and to **prove them statistically**, not by intuition.
+:::
+::: {.column width="48%"}
+::: {.bignum}
+105,555
+:::
+::: {.bignum-label}
+policy-year records · 30 variables · Spain, 2015–2018
+:::
+
+<br>
+
+- No ready-made profitability field → I derive the **Loss Ratio** (claims ÷ premium)
+- Above **100%** = a technical loss
+- **Goal:** validate drivers of **profitability** & **volatility**
+:::
+::::
 
 ::: {.notes}
 The portfolio contains over 100,000 policy-year records across 30 variables. Because the dataset has no ready-made profitability field, the central metric — the Loss Ratio, claims divided by premium — is derived during data preparation. A value above 100% indicates a technical loss. All subsequent analysis revolves around explaining this measure.
@@ -71,31 +89,52 @@ The portfolio contains over 100,000 policy-year records across 30 variables. Bec
 ## How Losses Are Distributed {.smaller}
 
 :::: {.columns}
-::: {.column width="60%"}
+
+::: {.column width="68%"}
 ```{r}
-#| fig-width: 6
-#| fig-height: 4.5
+#| fig-width: 8.5
+#| fig-height: 5.2
 sandbox %>%
-  filter(Has_Claim == "Claim", !is.na(Loss_Ratio_capped)) %>%
-  ggplot(aes(x = Loss_Ratio_capped)) +
-  geom_histogram(bins = 60, fill = "#2c7fb8", colour = "white", alpha = 0.9) +
-  geom_vline(xintercept = 1, colour = "red", linewidth = 1, linetype = "dashed") +
-  scale_x_continuous(labels = scales::percent_format()) +
-  labs(x = "Loss Ratio (Claims / Premium)", y = "Number of policies") +
-  theme_minimal(base_size = 14)
+  filter(Has_Claim == "Claim", !is.na(Loss_Ratio)) %>%
+  mutate(LR_plot = pmin(Loss_Ratio, 3)) %>%      
+  ggplot(aes(x = LR_plot)) +
+  geom_histogram(bins = 50, fill = "#e36c52", colour = "white", alpha = 0.95) +
+  geom_vline(xintercept = 1, colour = "#1a1a1a",
+             linewidth = 0.9, linetype = "dashed") +
+  annotate("text", x = 1.02, y = Inf, label = "Break-even (100%)",
+           hjust = 0, vjust = 1.6, size = 4.2, colour = "#1a1a1a") +
+  annotate("text", x = 3, y = Inf, label = "→ capped at 300%\n(heavy tail beyond)",
+           hjust = 1, vjust = 1.4, size = 3.6, colour = "#9c3d27") +
+  scale_x_continuous(labels = scales::percent_format(),
+                     breaks = seq(0, 3, 0.5)) +
+  labs(x = "Loss Ratio (Claims / Premium)",
+       y = "Number of claiming policies") +
+  theme_minimal(base_size = 15) +
+  theme(panel.grid.minor = element_blank(),
+        axis.title = element_text(face = "bold"))
 ```
 :::
-::: {.column width="40%"}
-- **81%** of policies have no claim (Loss Ratio = 0)
-- Among claiming policies, median Loss Ratio stays **below 100%** (break-even)
-- A long right tail exceeds break-even; the **800% cap** holds catastrophic policies
-- **Profitability is driven by the tail**, not the typical claim
+
+::: {.column width="32%"}
+::: {.dist-read}
+**How to read it**
+
+Each bar = policies at that loss level. The dashed line is **break-even** — left of it, the policy made money; right of it, claims beat premium.
+
+The bulk sits **left of break-even**, but a long **right tail** keeps going well past 300%.
 :::
+:::
+
 ::::
 
-::: {.notes}
-About 81% of policies have no claim at all. Among those that do, the Loss Ratio is strongly right-skewed: most stay below the 100% break-even line, but a long tail runs at a technical loss. The spike at the cap represents catastrophic policies whose losses exceed eight times the premium. Profitability is therefore driven by the tail, not the typical claim.
+::: {.dist-points}
+**81%** of policies never claim · among claimers, **most stay below break-even** · a **heavy tail** runs at a technical loss → **profitability lives in the tail, not the average**
 :::
+
+::: {.notes}
+About 81% of policies have no claim at all. Among those that do claim, the Loss Ratio is strongly right-skewed: the bulk of claiming policies sit below the 100% break-even line, meaning their claims cost less than the premium collected. But a long right tail extends far beyond break-even — I've capped the axis at 300% here so the main distribution stays readable, but in the raw data the tail runs much further, up to catastrophic policies whose losses exceed eight times the premium. The key insight for underwriting is that aggregate profitability is driven by this small, extreme tail rather than by the typical policy. This argues for tail-focused risk segmentation rather than across-the-board rate increases.
+:::
+::::
 
 ## Do Vehicle Types Differ? {.smaller}
 
@@ -109,30 +148,36 @@ sandbox %>%
   ggplot(aes(x = Loss_Ratio_capped, y = Type_risk, fill = factor(stat(quantile)))) +
   stat_density_ridges(geom = "density_ridges_gradient", calc_ecdf = TRUE,
                       quantiles = 4, quantile_lines = TRUE) +
-  scale_fill_viridis_d(name = "Quartiles") +
-  labs(x = "Loss Ratio (capped)", y = NULL) +
-  theme_ridges(font_size = 12)
+  scale_fill_viridis_d(name = "Quartile") +
+  scale_x_continuous(labels = scales::percent_format(),
+                     breaks = seq(0, 8, 2)) +
+  labs(x = "Loss Ratio (Claims / Premium, capped)", y = NULL) +
+  theme_ridges(font_size = 13) +
+  theme(panel.grid.major = element_line(colour = "grey90"),
+        axis.title.x = element_text(face = "bold", hjust = 0.5))
 ```
 :::
 ::: {.column width="35%"}
 - All four vehicle types share a similar peak near **Loss Ratio = 0**
 - Motorbikes & vans show **heavier right tails** than agricultural
-- Quartile colours show wide spread (Q4 reaches the cap)
+- Quartile colours show wide spread (**Q4 reaches the cap**)
 - Shapes **look** distinct — but is the difference **statistically real**?
 :::
+
 ::::
 
 ::: {.notes}
 The ridgeline plot compares Loss Ratio distributions across the four vehicle types, with fill encoding quartiles. Motorbikes and vans show heavier right tails than agricultural vehicles. These shapes look visually distinct — but as the next slide shows, that visual difference does not survive a formal statistical test.
 :::
 
+
 ## A Formal Test Says: No {.smaller}
 
 :::: {.columns}
-::: {.column width="62%"}
+::: {.column width="55%"}
 ```{r}
 #| fig-width: 6
-#| fig-height: 4.5
+#| fig-height: 5
 set.seed(1234)
 br_dat <- sandbox %>%
   filter(Has_Claim == "Claim", !is.na(Loss_Ratio), Loss_Ratio < 5) %>%
@@ -142,11 +187,21 @@ ggbetweenstats(data = br_dat, x = Type_risk, y = Loss_Ratio,
                results.subtitle = TRUE)
 ```
 :::
-::: {.column width="38%"}
-- Kruskal-Wallis **χ² = 2.31, p = 0.32** (not significant)
-- Median Loss Ratios close: Motorbike **0.60**, Van **0.64**, Car **0.76**
-- Vehicle type does **not** affect claim **severity**
-- → Redirect the search to claim **frequency**
+::: {.column width="45%"}
+::: {.bignum}
+p = 0.32
+:::
+::: {.bignum-label}
+Kruskal-Wallis · not significant
+:::
+
+<br>
+
+The ridgelines *looked* different — but the medians barely move: **0.60 · 0.64 · 0.76**.
+
+Vehicle type does **not** drive claim **severity**.
+
+> So the structure must lie in **frequency** — *who* files a claim, not *how much*.
 :::
 ::::
 
@@ -156,28 +211,45 @@ A Kruskal-Wallis test returns p = 0.32, well above 0.05. Despite the visually di
 
 ## The Large-Sample Trap {.smaller}
 
-:::: {.columns}
-::: {.column width="60%"}
 ```{r}
-#| fig-width: 5.5
-#| fig-height: 4.5
+#| fig-width: 11
+#| fig-height: 3.5
 ggbarstats(data = sandbox, x = Has_Claim, y = Area,
            xlab = "Area", legend.title = "Claim status",
            results.subtitle = TRUE)
 ```
+:::: {.trap-cards}
+
+::: {.trap-card}
+**Statistically significant**
+
+χ² = **86.4**, p = **1.5e-20**
+
+A textbook "highly significant" result.
 :::
-::: {.column width="40%"}
-- Chi-square **χ² = 86.4, p = 1.5e-20** (highly significant)
-- But **Cramer's V = 0.03** → negligible association
-- Real gap is tiny: **18%** (rural) vs **20%** (urban)
-- With **105,555** rows, trivial gaps turn significant
-- → **Effect size matters, not just the p-value**
+
+::: {.trap-card}
+**Practically negligible**
+
+Cramer's V = **0.03** · gap is only **18% vs 20%**
+
+The association is essentially zero.
 :::
+
+::: {.trap-card .trap-card-accent}
+**Why? Sample size.**
+
+With **105,555** rows, even trivial gaps cross the significance line.
+
+→ **Effect size matters, not just the p-value.**
+:::
+
 ::::
 
 ::: {.notes}
 The chi-square test is highly significant, suggesting area matters. But the effect size, Cramer's V, is only 0.03 — negligible. The actual gap is just 18% rural versus 20% urban. With over 100,000 records, even a trivial difference becomes statistically significant. Reading the p-value alone would mislead; the effect size shows area is not a material driver.
 :::
+
 
 ## No Strong Numeric Predictor {.smaller}
 
@@ -208,8 +280,9 @@ The heatmap shows two things. Vehicle attributes are highly intercorrelated — 
 
 ## A Fair Comparison: The Funnel Plot {.smaller}
 
-:::: {.columns}
-::: {.column width="60%"}
+::::: {.columns}
+
+:::: {.column width="60%"}
 ```{r}
 #| fig-width: 6
 #| fig-height: 4.5
@@ -223,19 +296,29 @@ funnel_plot(.data = seg, numerator = claims, denominator = n,
             title = "Claim incidence by segment",
             x_label = "Exposure (number of policies)", y_label = "Claim rate")
 ```
+::::
+
+:::: {.column width="40%"}
+::: {.funnel-block}
+**Inside the funnel → noise**
+
+Small segments (agricultural, **~850** policies) swing by chance and sit **deep inside** the limits. The largest segment (cars, **~60,000**) lands on the mean line — **stable**.
 :::
-::: {.column width="40%"}
-- Small segments (e.g. agricultural, **~850** policies) fluctuate by chance
-- Agricultural sits deep inside the funnel → **noise, not signal**
-- **2 of 8** segments fall outside the limits → genuinely unusual
-- Largest segment (cars, **~60,000**) lies on the mean line → stable
-- Adjusted for **overdispersion** (extra-Poisson variation)
+
+::: {.funnel-block .funnel-block-accent}
+**Outside the limits → real**
+
+**2 of 8** segments fall outside the control limits — genuinely unusual, not sampling noise. Limits are **adjusted for overdispersion**, so the test is fair across segment sizes.
 :::
 ::::
+
+:::::
 
 ::: {.notes}
 The funnel plot reframes the comparison correctly. The two agricultural segments sit far left with very low exposure — a naive ranking would call them the safest, but their position inside the wide funnel shows this is noise, not signal. Two segments fall outside the control limits and are genuinely high-risk. The largest segment lies on the mean line, confirming stability. The plot adjusts for overdispersion, appropriate for insurance claims.
 :::
+
+
 
 ## What Really Drives a Claim? {.smaller}
 
@@ -279,19 +362,63 @@ The forest plot delivers the clearest answer. After controlling for all factors,
 
 ## Key Findings and Implications {.smaller}
 
-**Profitability is concentrated** — about **91%** of policies are individually profitable, yet a small catastrophic tail (Technical Result down to **−€260,000**) dominates the portfolio's economics. Managing the tail matters more than average pricing.
+::::: {.columns}
 
-**No single factor predicts loss** — vehicle type (Kruskal-Wallis **p = 0.32**), area (Cramer's V = **0.03**), and vehicle value (Spearman ρ = **0.13**) are all statistically weak or negligible. Risk is largely idiosyncratic.
+:::: {.column width="50%"}
+::: {.kf-label}
+What we found
+:::
 
-**Structure lies in frequency, not severity** — after controlling for all factors, vehicle type is the one robust driver of *whether* a claim occurs (vans & cars **OR < 1**). The apparent "agricultural risk" (**OR ≈ 100, CI > 1,000**) is small-sample noise, cross-validated by the funnel plot.
+::: {.kf-finding}
+**Profitability is concentrated** — about **91%** of policies are individually profitable, yet a small catastrophic tail (Technical Result down to **−€260,000**) dominates the portfolio's economics. Managing the tail matters far more than average pricing.
+:::
 
+::: {.kf-finding}
+**No single factor predicts loss** — vehicle type (Kruskal-Wallis **p = 0.32**), area (Cramer's **V = 0.03**) and vehicle value (Spearman **ρ = 0.13**) are all statistically weak or negligible. Loss is largely **idiosyncratic**, not explained by the rating factors on file.
+:::
 
-**Three recommendations:**
+::: {.kf-finding}
+**Structure lies in frequency, not severity** — after controlling for all factors, vehicle type is the one robust driver of *whether* a claim occurs (vans & cars **OR < 1**). The dramatic "agricultural risk" (**OR ≈ 100**) was small-sample noise — confirmed by the funnel plot.
+:::
+::::
 
-1. Manage the **tail policies**, not across-the-board rates
-2. Compare segments by **exposure**, not raw claim rates
-3. Pursue **data enrichment** — current rating factors miss true risk
+:::: {.column width="50%"}
+::: {.kf-label}
+What to do
+:::
+
+::: {.kf-action}
+**1 · Manage the tail, not the average**
+
+Focus underwriting and reinsurance on the rare catastrophic policies that drive losses, rather than raising rates across the whole book.
+:::
+
+::: {.kf-action}
+**2 · Compare segments by exposure**
+
+Judge segment risk on a funnel plot that widens for small samples — not on raw claim rates, which made tiny agricultural cohorts look falsely extreme.
+:::
+
+::: {.kf-action .kf-action-accent}
+**3 · Enrich the data**
+
+Existing rating factors miss true risk. Invest in richer features — driver behaviour, telematics, history — to capture the idiosyncratic variation current fields cannot.
+:::
+::::
+
+:::::
+
+## {.center .takeaway-slide}
+
+::: {.takeaway-text}
+The portfolio's fate is written in its **tail** and its **claim frequency** —
+not in any single rating factor.
+:::
+
+::: {.takeaway-sub}
+Manage the tail · compare by exposure · enrich the data
+:::
 
 ::: {.notes}
-The evidence converges on a coherent picture. Profitability is concentrated in a catastrophic tail. No single variable strongly predicts loss — all candidate factors are statistically weak or negligible. Where structure exists, it lies in claim frequency, driven by vehicle type, not severity. Three underwriting recommendations follow: manage the tail rather than raising all rates, compare segments by exposure, and pursue data enrichment because current rating factors capture the vehicle's physical characteristics far better than its true risk.
+The single most important takeaway: the portfolio's profitability and volatility are driven by the catastrophic tail and by claim frequency, not by any individual rating factor examined. The three actions follow directly — manage tail policies, compare segments fairly by exposure, and enrich the data to capture true risk.
 :::
