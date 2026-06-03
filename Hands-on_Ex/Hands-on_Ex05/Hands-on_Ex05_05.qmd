@@ -15,7 +15,9 @@ execute:
   warning: false
   freeze: true
 ---
-# 16  Treemap Visualisation with R
+
+# 16 Treemap Visualisation with R
+
 ```{r}
 pacman::p_load(treemap, treemapify, tidyverse) 
 ```
@@ -185,7 +187,6 @@ library(devtools)
 install_github("timelyportfolio/d3treeR")
 ```
 
-
 ```{r}
 library(d3treeR)
 ```
@@ -204,4 +205,3 @@ tm <- treemap(realis2018_summarised,
 ```{r}
 d3tree(tm,rootname = "Singapore" )
 ```
-
