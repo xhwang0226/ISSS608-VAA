@@ -22,6 +22,7 @@ This website showcases my hands-on exercises and learning journey through the co
 -   [Hands-on Exercise 5_4: Visual Multivariate Analysis with Parallel Coordinates Plot R](Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05_04.html)
 -   [Hands-on Exercise 5_5: Treemap Visualisation with R R](Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05_04.html)
 -   [Hands-on Exercise 7_1: Modelling, Visualising and Analysing Network Data with R R](Hands-on_Ex/Hands-on_Ex07/Hands-on_Ex07_01.html)
+-   [Hands-on Exercise 7_2: Visualising and Analysing Text Data with R: tidytext methods R](Hands-on_Ex/Hands-on_Ex07/Hands-on_Ex07_01.html)
 
 ## Take-home Exercises
 
