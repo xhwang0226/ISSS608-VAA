@@ -27,3 +27,4 @@ This website showcases my hands-on exercises and learning journey through the co
 ## Take-home Exercises
 
 -   [Take-home Exercise 1](Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html)
+-   [Take-home Exercise 2](Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html)
